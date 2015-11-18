@@ -1,0 +1,17 @@
+(require 'exwm)
+(require 'exwm-config)
+(setq exwm-workspace-number 10)
+(exwm-config-default)
+;(exwm-workspace-switch 1)
+
+(defun launcher-for (command)
+  (lexical-let ((cmd command))    
+    (lambda (&optional )
+      (interactive)
+      (start-process-shell-command cmd nil cmd))))
+
+(bind-key "s-x f" (launcher-for "/home/fox/stow/bin/firefox"))
+(bind-key "s-x i" (launcher-for "/home/fox/stow/packages/idea-IU-143.381.42/bin/idea.sh"))
+(bind-key "s-x t" (launcher-for "gnome-terminal"))
+(bind-key "s-x k" (launcher-for "/users/dlyons/bin/fixkeys"))
+(bind-key "s-L"   (launcher-for "gnome-screensaver-command -l"))
