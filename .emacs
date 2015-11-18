@@ -25,6 +25,9 @@
 		  slime-repl-mode-hook))
     (add-hook mode hook)))
 
+(use-package magit
+  :bind ("C-x g" . magit-status))
+
 (use-package telephone-line
   :demand t
   :ensure t
@@ -55,6 +58,11 @@
   :diminish company-mode
   :init
   (add-hook 'prog-mode-hook 'company-mode))
+
+(use-package flycheck
+  :ensure t
+  :init
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 ;; Prolog stuff
 (use-package prolog-mode
@@ -132,7 +140,6 @@
   :init
   (setq org-agenda-files '("~/Desktop/TODO.org")
 	org-confirm-babel-evaluate nil
-	org-babel-prolog-command "/home/fox/stow/bin/swipl"
 	org-confirm-babel-evaluate nil
 	org-use-speed-commands t
 	org-default-notes-file "~/Desktop/TODO.org")
@@ -162,7 +169,7 @@
 
 ;; need to use UTF-8 by default because it's 2015
 (setq default-process-coding-system '(utf-8 . utf-8))
-(setq default-buffer-file-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
 
 ;; Kill buffers and frames
 (bind-key "C-x 5 k" 'kill-buffer-and-frame)
@@ -205,7 +212,8 @@
  '(tags-table-list
    (quote
     ("/home/fox/stow/src/emacs-24.5/src" "/home/fox/stow/src/emacs-24.5/lisp")))
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(vc-follow-symlinks nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
