@@ -61,6 +61,7 @@
 
 (use-package flycheck
   :ensure t
+  :diminish flycheck-mode
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
@@ -137,12 +138,14 @@
 ;; Org mode stuff
 (use-package org
   :demand t
+  :diminish orgtbl-mode
+  :diminish orgstruct-mode
   :init
-  (setq org-agenda-files '("~/Desktop/TODO.org")
+  (setq org-agenda-files '("~/Desktop/Notes/TODO.org")
 	org-confirm-babel-evaluate nil
 	org-confirm-babel-evaluate nil
 	org-use-speed-commands t
-	org-default-notes-file "~/Desktop/TODO.org")
+	org-default-notes-file "~/Desktop/Notes/TODO.org")
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((sql . t)
@@ -191,6 +194,9 @@
 (bind-key "M-0" "”")
 (bind-key "M-(" "‘")
 (bind-key "M-)" "’")
+
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
 
 ;; Customize
 (custom-set-variables
