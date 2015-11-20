@@ -26,6 +26,7 @@
     (add-hook mode hook)))
 
 (use-package magit
+  :ensure t
   :bind ("C-x g" . magit-status))
 
 (use-package telephone-line
@@ -112,12 +113,12 @@
   (setq user-mail-address "dlyons@nrao.edu"
 	mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
 	send-mail-function 'sendmail-send-it
-	mu4e-mu-binary "/home/fox/stow/bin/mu"
+	mu4e-mu-binary "mu"
 	mu4e-sent-folder "/Sent"
 	mu4e-drafts-folder "/Drafts"
 	mu4e-trash-folder "/Trash"
 	mu4e-refile-folder "/Archives"
-	mu4e-get-mail-command "/home/fox/stow/bin/offlineimap"
+	mu4e-get-mail-command "offlineimap"
 	mu4e-update-interval 300
 	mu4e-compose-signature (file-string "~/.signature")
 	mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
@@ -130,29 +131,27 @@
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode))
 
 ;; Window manager
-(load-file "~/.emacs.d/dkl/exwm.el")
+;(load-file "~/.emacs.d/dkl/exwm.el")
 
 ;; printer
-(setq lpr-switches '("-Paoc324"))
+;(setq lpr-switches '("-Paoc324"))
 
 ;; Org mode stuff
 (use-package org
   :demand t
-  :diminish orgtbl-mode
   :diminish orgstruct-mode
   :init
-  (setq org-agenda-files '("~/Desktop/Notes/TODO.org")
+  (setq org-agenda-files '("~/Dropbox/Notes/TODO.org")
 	org-confirm-babel-evaluate nil
 	org-confirm-babel-evaluate nil
 	org-use-speed-commands t
-	org-default-notes-file "~/Desktop/Notes/TODO.org")
+	org-default-notes-file "~/Dropbox/Notes/TODO.org")
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((sql . t)
      (sh . t)
      (haskell . t)
      (awk . t)
-     (prolog . t)
      (lisp . t)))
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
