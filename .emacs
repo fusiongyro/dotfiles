@@ -1,7 +1,13 @@
 ;; -*- mode: emacs-lisp -*-
 (setq package-enable-at-startup nil)
 (package-initialize)
+
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+
+(add-to-list 'exec-path "/home/fox/stow/bin")
+(add-to-list 'exec-path "~/bin")
+(add-to-list 'exec-path "~/.cabal/bin")
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -24,6 +30,8 @@
 		  slime-mode-hook
 		  slime-repl-mode-hook))
     (add-hook mode hook)))
+
+(use-package cider)
 
 (use-package magit
   :ensure t
@@ -79,8 +87,7 @@
   (autoload 'ghc-debug "ghc" nil t)
   :config
   (ghc-init)
-  (haskell-indentation-mode)
-  (add-to-list 'exec-path "~/.cabal/bin"))
+  (haskell-indentation-mode))
 
 (use-package markdown-mode
   :init
@@ -123,7 +130,7 @@
 	mu4e-drafts-folder "/Drafts"
 	mu4e-trash-folder "/Trash"
 	mu4e-refile-folder "/Archives"
-	mu4e-get-mail-command "offlineimap"
+	mu4e-get-mail-command "/home/fox/stow/bin/offlineimap"
 	mu4e-update-interval 300
 	mu4e-compose-signature (file-string "~/.signature")
 	mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
@@ -133,13 +140,14 @@
 			 ("date:today..now" "Today's messages" ?t)
 			 ("date:7d..now" "Last 7 days" ?w)
 			 ("mime:image/*" "Messages with images" ?p)))
-  (add-hook 'mu4e-view-mode-hook 'visual-line-mode))
+  (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+  (load-library "org-mu4e"))
 
 ;; Window manager
 ;(load-file "~/.emacs.d/dkl/exwm.el")
 
 ;; printer
-;(setq lpr-switches '("-Paoc324"))
+(setq lpr-switches '("-Paoc324"))
 
 ;; Org mode stuff
 (use-package org
@@ -191,6 +199,17 @@
 
 (bind-key "M-Q" 'unfill)
 
+;; Let's have a Stack Overflow-ify method on the buffer and region
+(defun copy-buffer-for-stackoverflow (beg end)
+  (interactive (if (use-region-p)
+		   (list (region-beginning) (region-end))
+		 (list nil nil)))
+  (let* ((buf (if (and beg end) (buffer-substring-no-properties beg end) (buffer-string)))
+	 (enhanced (replace-regexp-in-string "^" "    " buf)))
+    (kill-new enhanced)))
+
+(bind-key "C-c s" 'copy-buffer-for-stackoverflow)
+
 ;; alt keybindings from Mac OS X
 (bind-key "M-_" "—")
 (bind-key "M--" "–")
@@ -223,7 +242,7 @@
    (quote
     ("/home/fox/stow/src/emacs-24.5/src" "/home/fox/stow/src/emacs-24.5/lisp")))
  '(tool-bar-mode nil)
- '(vc-follow-symlinks nil))
+ '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
