@@ -102,6 +102,11 @@
     (setq slime-net-coding-system 'utf-8-unix)
     (setq inferior-lisp-program "sbcl")))
 
+(use-package cider
+  :ensure t
+  :init
+  (add-to-list 'exec-path "~/bin"))
+
 ;; Mail
 (defun file-string (file)
     "Read the contents of a file and return as a string."
