@@ -1,4 +1,7 @@
 ;; -*- mode: emacs-lisp -*-
+
+;;; Code:
+(setq gc-cons-threshold 800000000)
 (setq package-enable-at-startup nil)
 (package-initialize)
 
@@ -81,13 +84,13 @@
   (setq prolog-program-name "swipl"))
 
 ;; GHC/Haskell stuff
-(use-package ghc-mod
-  :init
-  (autoload 'ghc-init "ghc" nil t)
-  (autoload 'ghc-debug "ghc" nil t)
-  :config
-  (ghc-init)
-  (haskell-indentation-mode))
+;; (use-package ghc-mod
+;;   :init
+;;   (autoload 'ghc-init "ghc" nil t)
+;;   (autoload 'ghc-debug "ghc" nil t)
+;;   :config
+;;   (ghc-init)
+;;   (haskell-indentation-mode))
 
 (use-package markdown-mode
   :init
@@ -173,6 +176,18 @@
 	 ("C-c c" . org-capture)
 	 ("C-c b" . org-iswitchb)))
 
+;; Haste
+(use-package haste
+  :ensure t
+  :bind ("C-c h" . haste))
+
+(use-package calc
+  :init
+  (setq math-additional-units '((GB "1024 * MB" "Giga Byte")
+				(MB "1024 * KB" "Mega Byte")
+				(KB "1024 * B" "Kilo Byte")
+				(B nil "Byte"))))
+
 ;; kill a window
 (defun kill-buffer-and-frame ()
   (interactive)
@@ -220,6 +235,8 @@
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
+
+(setq gc-cons-threshold 800000)
 
 ;; Customize
 (custom-set-variables
