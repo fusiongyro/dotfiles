@@ -123,7 +123,7 @@
   (setq user-mail-address "dlyons@nrao.edu"
 	mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
 	send-mail-function 'sendmail-send-it
-	mu4e-mu-binary "mu"
+	mu4e-mu-binary "/home/fox/stow/bin/mu"
 	mu4e-sent-folder "/Sent"
 	mu4e-drafts-folder "/Drafts"
 	mu4e-trash-folder "/Trash"
@@ -250,6 +250,7 @@
  '(menu-bar-mode nil)
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
+ '(mouse-autoselect-window t)
  '(tags-table-list
    (quote
     ("/home/fox/stow/src/emacs-24.5/src" "/home/fox/stow/src/emacs-24.5/lisp")))
