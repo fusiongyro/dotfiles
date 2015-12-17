@@ -5,6 +5,8 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+(setq load-path (cons "~/.emacs.d/dkl" load-path))
+
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
@@ -81,7 +83,11 @@
 (use-package prolog-mode
   :mode "\\.pl\\'"
   :init
-  (setq prolog-program-name "swipl"))
+  (setq prolog-program-name "swipl"
+	prolog-indent-width 4
+	prolog-paren-indent-p t
+	prolog-system 'swi))
+;; (load-file "/Users/fusion/Desktop/prolog.el")
 
 ;; GHC/Haskell stuff
 ;; (use-package ghc-mod
@@ -111,6 +117,14 @@
     (slime-setup '(slime-fancy slime-company))
     (setq slime-net-coding-system 'utf-8-unix)
     (setq inferior-lisp-program "sbcl")))
+
+(use-package cider
+  :ensure t
+  :init
+  (add-to-list 'exec-path "~/bin"))
+
+(use-package haste
+  :ensure t)
 
 ;; Mail
 (defun file-string (file)
@@ -189,6 +203,10 @@
   (kill-buffer)
   (delete-frame))
 
+;; increase/decrease font size on a Mac
+(bind-key "s-+" 'text-scale-increase)
+(bind-key "s--" 'text-scale-decrease)
+
 ;; fix undo
 (bind-key "C-z" 'undo)
 
@@ -261,4 +279,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(variable-pitch ((t (:height 180 :family "PT Sans")))))
