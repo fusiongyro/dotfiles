@@ -66,6 +66,12 @@
   (ido-mode 1)
   (setq ido-everywhere t))
 
+(use-package proof-site
+  :defer t
+  :mode ("\\.v\\'" . coq-mode)
+  :load-path
+  "/home/fox/stow/packages/ProofGeneral/generic")
+
 (use-package company
   :ensure t
   :demand t
@@ -76,8 +82,12 @@
 (use-package flycheck
   :ensure t
   :diminish flycheck-mode
+  :config
+  (setq flycheck-c/c++-gcc-executable "/home/fox/stow/packages/gcc-4.8.5/bin/gcc")
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode))
+
+
 
 ;; Prolog stuff
 (use-package prolog-mode
@@ -150,6 +160,7 @@
 			 ("maildir:/Sent" "Sent Messages" ?s)
 			 ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
 			 ("date:today..now" "Today's messages" ?t)
+                         ("date:1d..today" "Yesterday's messages" ?y)
 			 ("date:7d..now" "Last 7 days" ?w)
 			 ("mime:image/*" "Messages with images" ?p)))
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
@@ -161,10 +172,15 @@
 ;; printer
 (setq lpr-switches '("-Paoc324"))
 
+(diminish 'abbrev-mode)
+(diminish 'auto-fill-function)
+(diminish 'mml-mode)
+
 ;; Org mode stuff
 (use-package org
   :demand t
   :diminish orgstruct-mode
+  :diminish orgtbl-mode
   :init
   (setq org-agenda-files '("~/Dropbox/Notes/TODO.org")
 	org-confirm-babel-evaluate nil
@@ -180,6 +196,7 @@
      (lisp . t)))
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
+  (add-hook 'message-mode-hook 'flyspell-mode)
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
@@ -269,6 +286,7 @@
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
  '(mouse-autoselect-window t)
+ '(indent-tabs-mode nil)
  '(tags-table-list
    (quote
     ("/home/fox/stow/src/emacs-24.5/src" "/home/fox/stow/src/emacs-24.5/lisp")))
