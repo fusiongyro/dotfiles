@@ -69,8 +69,15 @@
 (use-package proof-site
   :defer t
   :mode ("\\.v\\'" . coq-mode)
+  :config
+  (proof-three-window-enable t)
   :load-path
   "/home/fox/stow/packages/ProofGeneral/generic")
+
+(use-package rnc-mode
+  :mode "\\.rnc\\'"
+  :init
+  (setq rnc-jing-jar-file (expand-file-name "~/jing.jar")))
 
 (use-package company
   :ensure t
@@ -255,6 +262,8 @@
 
 (bind-key "C-c s" 'copy-buffer-for-stackoverflow)
 
+(bind-key "C-c t" 'auto-revert-mode)
+
 ;; alt keybindings from Mac OS X
 (bind-key "M-_" "—")
 (bind-key "M--" "–")
@@ -265,6 +274,9 @@
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
+
+;; this is for the shell, because it isn't brilliant at this
+(setenv "HISTFILE" (expand-file-name (format "~/.history/%s" (getenv "HOSTNAME"))))
 
 (setq gc-cons-threshold 800000)
 
@@ -278,15 +290,15 @@
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(indent-tabs-mode nil)
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(line-number-mode 1)
  '(menu-bar-mode nil)
+ '(mouse-autoselect-window t)
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
- '(mouse-autoselect-window t)
- '(indent-tabs-mode nil)
  '(tags-table-list
    (quote
     ("/home/fox/stow/src/emacs-24.5/src" "/home/fox/stow/src/emacs-24.5/lisp")))
@@ -297,4 +309,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(variable-pitch ((t (:height 180 :family "PT Sans")))))
+ '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "adobe" :family "PragmataPro"))))
+ '(variable-pitch ((t (:height 120 :family "Source Sans Pro")))))
+
+(provide 'init)
+;;; init.el ends here
+
