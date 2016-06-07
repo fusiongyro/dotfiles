@@ -68,6 +68,19 @@
   (ido-mode 1)
   (setq ido-everywhere t))
 
+(use-package proof-site
+  :defer t
+  :mode ("\\.v\\'" . coq-mode)
+  :config
+  (proof-three-window-enable t)
+  :load-path
+  "/home/fox/stow/packages/ProofGeneral/generic")
+
+(use-package rnc-mode
+  :mode "\\.rnc\\'"
+  :init
+  (setq rnc-jing-jar-file (expand-file-name "~/jing.jar")))
+
 (use-package company
   :ensure t
   :demand t
@@ -78,8 +91,12 @@
 (use-package flycheck
   :ensure t
   :diminish flycheck-mode
+  :config
+  (setq flycheck-c/c++-gcc-executable "/home/fox/stow/packages/gcc-4.8.5/bin/gcc")
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode))
+
+
 
 ;; Prolog stuff
 (use-package prolog-mode
@@ -139,7 +156,7 @@
   (setq user-mail-address "dlyons@nrao.edu"
 	mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
 	send-mail-function 'sendmail-send-it
-	mu4e-mu-binary "mu"
+	mu4e-mu-binary "/home/fox/stow/bin/mu"
 	mu4e-sent-folder "/Sent"
 	mu4e-drafts-folder "/Drafts"
 	mu4e-trash-folder "/Trash"
@@ -152,6 +169,7 @@
 			 ("maildir:/Sent" "Sent Messages" ?s)
 			 ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
 			 ("date:today..now" "Today's messages" ?t)
+                         ("date:1d..today" "Yesterday's messages" ?y)
 			 ("date:7d..now" "Last 7 days" ?w)
 			 ("mime:image/*" "Messages with images" ?p)))
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
@@ -163,10 +181,15 @@
 ;; printer
 (setq lpr-switches '("-Paoc324"))
 
+(diminish 'abbrev-mode)
+(diminish 'auto-fill-function)
+(diminish 'mml-mode)
+
 ;; Org mode stuff
 (use-package org
   :demand t
   :diminish orgstruct-mode
+  :diminish orgtbl-mode
   :init
   (setq org-agenda-files '("~/Dropbox/Notes/TODO.org")
 	org-confirm-babel-evaluate nil
@@ -182,6 +205,7 @@
      (lisp . t)))
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
+  (add-hook 'message-mode-hook 'flyspell-mode)
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
@@ -240,6 +264,8 @@
 
 (bind-key "C-c s" 'copy-buffer-for-stackoverflow)
 
+(bind-key "C-c t" 'auto-revert-mode)
+
 ;; alt keybindings from Mac OS X
 (bind-key "M-_" "—")
 (bind-key "M--" "–")
@@ -250,6 +276,9 @@
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
+
+;; this is for the shell, because it isn't brilliant at this
+(setenv "HISTFILE" (expand-file-name (format "~/.history/%s" (getenv "HOSTNAME"))))
 
 (setq gc-cons-threshold 800000)
 
@@ -263,6 +292,7 @@
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(indent-tabs-mode nil)
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
@@ -299,6 +329,7 @@
  '(proof-tree-configured t)
  '(proof-tree-find-begin-of-unfinished-proof (quote coq-find-begin-of-unfinished-proof))
  '(proof-tree-get-proof-info (quote coq-proof-tree-get-proof-info))
+ '(mouse-autoselect-window t)
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
  '(tags-table-list
@@ -312,4 +343,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :foundry "nil" :family "PragmataPro"))))
- '(variable-pitch ((t (:height 180 :family "PT Sans")))))
+ '(variable-pitch ((t (:height 120 :family "Source Sans Pro")))))
+
+(provide 'init)
+;;; init.el ends here
