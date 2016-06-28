@@ -36,9 +36,12 @@
 		  slime-repl-mode-hook))
     (add-hook mode hook)))
 
-(load-file "~/Downloads/ProofGeneral-4.2/ProofGeneral-4.2/generic/proof-site.el")
-
 (use-package cider)
+
+(use-package fill-column-indicator
+  :ensure t
+  :demand t
+  :init (add-hook 'text-mode-hook 'fci-mode))
 
 (use-package magit
   :ensure t
@@ -274,6 +277,10 @@
 (bind-key "M-(" "‘")
 (bind-key "M-)" "’")
 
+;; fixing problems on OS X
+(bind-key "<home>" 'beginning-of-line)
+(bind-key "<end>" 'end-of-line)
+
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
@@ -298,37 +305,6 @@
  '(initial-scratch-message nil)
  '(line-number-mode 1)
  '(menu-bar-mode nil)
- '(proof-assistant-home-page "http://coq.inria.fr/")
- '(proof-context-command "Print All. ")
- '(proof-find-and-forget-fn (quote coq-find-and-forget))
- '(proof-find-theorems-command "Search %s. ")
- '(proof-goal-command "Goal %s. ")
- '(proof-goal-command-p (quote coq-goal-command-p))
- '(proof-guess-command-line (quote coq-guess-command-line))
- '(proof-multiple-frames-enable nil)
- '(proof-nested-undo-regexp
-   "\\(?:\\_<Axiom\\_>\\)\\|\\(?:\\_<Global\\s-+Variable\\_>\\)\\|\\(?:\\_<Global\\s-+Variables\\_>\\)\\|\\(?:\\_<Hint\\s-+Constructors\\_>\\)\\|\\(?:\\_<Hint\\s-+Extern\\_>\\)\\|\\(?:\\_<Hint\\s-+Immediate\\_>\\)\\|\\(?:\\_<Hint\\s-+Resolve\\_>\\)\\|\\(?:\\_<Hint\\s-+Rewrite\\_>\\)\\|\\(?:\\_<Hint\\s-+Unfold\\_>\\)\\|\\(?:\\_<Existing\\s-+Instance\\_>\\)\\|\\(?:\\_<Hypothesis\\_>\\)\\|\\(?:\\_<Hypotheses\\_>\\)\\|\\(?:\\_<Parameter\\_>\\)\\|\\(?:\\_<Parameters\\_>\\)\\|\\(?:\\_<Conjecture\\_>\\)\\|\\(?:\\_<Variable\\_>\\)\\|\\(?:\\_<Variables\\_>\\)\\|\\(?:\\_<Coercion\\_>\\)\\|\\(?:\\_<CoFixpoint\\_>\\)\\|\\(?:\\_<CoInductive\\_>\\)\\|\\(?:\\_<Class\\_>\\)\\|\\(?:\\_<Declare\\s-+Module\\_>\\)\\|\\(?:\\_<Definition\\_>\\)\\|\\(?:\\_<Program\\s-+Definition\\_>\\)\\|\\(?:\\_<Derive\\s-+Inversion\\_>\\)\\|\\(?:\\_<Derive\\s-+Dependent\\s-+Inversion\\_>\\)\\|\\(?:\\_<Example\\_>\\)\\|\\(?:\\_<Equations\\_>\\)\\|\\(?:\\_<Fixpoint\\_>\\)\\|\\(?:\\_<Program\\s-+Fixpoint\\_>\\)\\|\\(?:\\_<Function\\_>\\)\\|\\(?:\\_<Functional\\s-+Scheme\\_>\\)\\|\\(?:\\_<Inductive\\_>\\)\\|\\(?:\\_<Instance\\_>\\)\\|\\(?:\\_<Program\\s-+Instance\\_>\\)\\|\\(?:\\_<Let\\_>\\)\\|\\(?:\\_<Ltac\\_>\\)\\|\\(?:\\_<Record\\_>\\)\\|\\(?:\\_<Scheme\\_>\\)\\|\\(?:\\_<Structure\\_>\\)\\|\\(?:\\_<Add\\s-+Morphism\\_>\\)\\|\\(?:\\_<Add\\s-+Parametric\\s-+Morphism\\_>\\)\\|\\(?:\\_<Chapter\\_>\\)\\|\\(?:\\_<Corollary\\_>\\)\\|\\(?:\\_<Fact\\_>\\)\\|\\(?:\\_<Goal\\_>\\)\\|\\(?:\\_<Lemma\\_>\\)\\|\\(?:\\_<Program\\s-+Lemma\\_>\\)\\|\\(?:\\_<Module\\s-+Type\\_>\\)\\|\\(?:\\_<Module\\_>\\)\\|\\(?:\\_<Remark\\_>\\)\\|\\(?:\\_<Section\\_>\\)\\|\\(?:\\_<Theorem\\_>\\)\\|\\(?:\\_<Program\\s-+Theorem\\_>\\)\\|\\(?:\\_<Obligation\\_>\\)\\|\\(?:\\_<Next Obligation\\_>\\)\\|\\(?:\\_<Add\\s-+Parametric\\s-+Relation\\_>\\)\\|\\(?:\\_<BeginSubproof\\_>\\)\\|\\(?:\\_<EndSubproof\\_>\\)\\|\\(?:\\_<Add\\s-+Abstract\\s-+Ring\\_>\\)\\|\\(?:\\_<Add\\s-+Abstract\\s-+Semi\\s-+Ring\\_>\\)\\|\\(?:\\_<Add\\s-+Field\\_>\\)\\|\\(?:\\_<Add\\s-+Printing\\_>\\)\\|\\(?:\\_<Add\\s-+Printing\\s-+If\\_>\\)\\|\\(?:\\_<Add\\s-+Printing\\s-+Let\\_>\\)\\|\\(?:\\_<Add\\s-+Ring\\_>\\)\\|\\(?:\\_<Add\\s-+Semi\\s-+Ring\\_>\\)\\|\\(?:\\_<Add\\s-+Setoid\\_>\\)\\|\\(?:\\_<Arguments\\s-+Scope\\_>\\)\\|\\(?:\\_<Bind\\s-+Scope\\_>\\)\\|\\(?:\\_<Canonical\\s-+Structure\\_>\\)\\|\\(?:\\_<Local\\s-+Close\\s-+Scope\\_>\\)\\|\\(?:\\_<Close\\s-+Scope\\_>\\)\\|\\(?:\\_<Delimit\\s-+Scope\\_>\\)\\|\\(?:\\_<Export\\_>\\)\\|\\(?:\\_<Extraction\\s-+Inline\\_>\\)\\|\\(?:\\_<Extraction\\s-+NoInline\\_>\\)\\|\\(?:\\_<Extraction\\s-+Language\\_>\\)\\|\\(?:\\_<Generalizable\\s-+Variables\\_>\\)\\|\\(?:\\_<Generalizable\\s-+All\\s-+Variables\\_>\\)\\|\\(?:\\_<Identity\\s-+Coercion\\_>\\)\\|\\(?:\\_<Implicit\\s-+Arguments\\s-+Off\\_>\\)\\|\\(?:\\_<Implicit\\s-+Arguments\\s-+On\\_>\\)\\|\\(?:\\_<Implicit\\s-+Arguments\\_>\\)\\|\\(?:\\_<Implicit\\s-+Types\\_>\\)\\|\\(?:\\_<Import\\_>\\)\\|\\(?:\\_<Infix\\_>\\)\\|\\(?:\\_<Local\\s-+Notation\\_>\\)\\|\\(?:\\_<Notation\\_>\\)\\|\\(?:\\_<Obligation\\s-+Tactic\\_>\\)\\|\\(?:\\_<Local\\s-+Open\\s-+Scope\\_>\\)\\|\\(?:\\_<Open\\s-+Local\\s-+Scope\\_>\\)\\|\\(?:\\_<Open\\s-+Scope\\_>\\)\\|\\(?:\\_<Remove\\s-+Printing\\s-+If\\_>\\)\\|\\(?:\\_<Remove\\s-+Printing\\s-+Let\\_>\\)\\|\\(?:\\_<Require\\s-+Export\\_>\\)\\|\\(?:\\_<Require\\s-+Import\\_>\\)\\|\\(?:\\_<Require\\_>\\)\\|\\(?:\\_<Reset\\s-+Extraction\\s-+Inline\\_>\\)\\|\\(?:\\_<Save\\_>\\)\\|\\(?:\\_<Set\\s-+Extraction\\s-+AutoInline\\_>\\)\\|\\(?:\\_<Set\\s-+Extraction\\s-+Optimize\\_>\\)\\|\\(?:\\_<Set\\s-+Implicit\\s-+Arguments\\_>\\)\\|\\(?:\\_<Set\\s-+Strict\\s-+Implicit\\_>\\)\\|\\(?:\\_<Set\\s-+Printing\\s-+Synth\\_>\\)\\|\\(?:\\_<Set\\s-+Printing\\s-+Wildcard\\_>\\)\\|\\(?:\\_<Set\\s-+Printing\\s-+All\\_>\\)\\|\\(?:\\_<Set\\s-+Printing\\s-+Coercions\\_>\\)\\|\\(?:\\_<Set\\s-+Printing\\s-+Notations\\_>\\)\\|\\(?:\\_<Solve\\s-+Obligations\\_>\\)\\|\\(?:\\_<Tactic\\s-+Notation\\_>\\)\\|\\(?:\\_<Unset\\s-+Extraction\\s-+AutoInline\\_>\\)\\|\\(?:\\_<Unset\\s-+Extraction\\s-+Optimize\\_>\\)\\|\\(?:\\_<Unset\\s-+Implicit\\s-+Arguments\\_>\\)\\|\\(?:\\_<Unset\\s-+Strict\\s-+Implicit\\_>\\)\\|\\(?:\\_<Unset\\s-+Printing\\s-+Synth\\_>\\)\\|\\(?:\\_<Unset\\s-+Printing\\s-+Wildcard\\_>\\)\\|\\(?:\\_<Unset\\s-+Printing\\s-+Coercion\\_>\\)\\|\\(?:\\_<Axiom\\_>\\)\\|\\(?:\\_<Global\\s-+Variable\\_>\\)\\|\\(?:\\_<Global\\s-+Variables\\_>\\)\\|\\(?:\\_<Hint\\s-+Constructors\\_>\\)\\|\\(?:\\_<Hint\\s-+Extern\\_>\\)\\|\\(?:\\_<Hint\\s-+Immediate\\_>\\)\\|\\(?:\\_<Hint\\s-+Resolve\\_>\\)\\|\\(?:\\_<Hint\\s-+Rewrite\\_>\\)\\|\\(?:\\_<Hint\\s-+Unfold\\_>\\)\\|\\(?:\\_<Existing\\s-+Instance\\_>\\)\\|\\(?:\\_<Hypothesis\\_>\\)\\|\\(?:\\_<Hypotheses\\_>\\)\\|\\(?:\\_<Parameter\\_>\\)\\|\\(?:\\_<Parameters\\_>\\)\\|\\(?:\\_<Conjecture\\_>\\)\\|\\(?:\\_<Variable\\_>\\)\\|\\(?:\\_<Variables\\_>\\)\\|\\(?:\\_<Coercion\\_>\\)\\|\\(?:\\_<CoFixpoint\\_>\\)\\|\\(?:\\_<CoInductive\\_>\\)\\|\\(?:\\_<Class\\_>\\)\\|\\(?:\\_<Declare\\s-+Module\\_>\\)\\|\\(?:\\_<Definition\\_>\\)\\|\\(?:\\_<Program\\s-+Definition\\_>\\)\\|\\(?:\\_<Derive\\s-+Inversion\\_>\\)\\|\\(?:\\_<Derive\\s-+Dependent\\s-+Inversion\\_>\\)\\|\\(?:\\_<Example\\_>\\)\\|\\(?:\\_<Equations\\_>\\)\\|\\(?:\\_<Fixpoint\\_>\\)\\|\\(?:\\_<Program\\s-+Fixpoint\\_>\\)\\|\\(?:\\_<Function\\_>\\)\\|\\(?:\\_<Functional\\s-+Scheme\\_>\\)\\|\\(?:\\_<Inductive\\_>\\)\\|\\(?:\\_<Instance\\_>\\)\\|\\(?:\\_<Program\\s-+Instance\\_>\\)\\|\\(?:\\_<Let\\_>\\)\\|\\(?:\\_<Ltac\\_>\\)\\|\\(?:\\_<Record\\_>\\)\\|\\(?:\\_<Scheme\\_>\\)\\|\\(?:\\_<Structure\\_>\\)\\|\\(?:\\_<Add\\s-+Morphism\\_>\\)\\|\\(?:\\_<Add\\s-+Parametric\\s-+Morphism\\_>\\)\\|\\(?:\\_<Chapter\\_>\\)\\|\\(?:\\_<Corollary\\_>\\)\\|\\(?:\\_<Fact\\_>\\)\\|\\(?:\\_<Goal\\_>\\)\\|\\(?:\\_<Lemma\\_>\\)\\|\\(?:\\_<Program\\s-+Lemma\\_>\\)\\|\\(?:\\_<Module\\s-+Type\\_>\\)\\|\\(?:\\_<Module\\_>\\)\\|\\(?:\\_<Remark\\_>\\)\\|\\(?:\\_<Section\\_>\\)\\|\\(?:\\_<Theorem\\_>\\)\\|\\(?:\\_<Program\\s-+Theorem\\_>\\)\\|\\(?:\\_<Obligation\\_>\\)\\|\\(?:\\_<Obligations\\_>\\)\\|\\(?:\\_<Next Obligation\\_>\\)")
- '(proof-output-tooltips nil)
- '(proof-prog-name "/opt/local/bin/coqtop")
- '(proof-prog-name-guess t)
- '(proof-query-file-save-when-activating-scripting nil)
- '(proof-really-save-command-p (quote coq-save-command-p))
- '(proof-save-command "Save %s. ")
- '(proof-script-comment-end "*)")
- '(proof-script-comment-end-regexp "\\*)")
- '(proof-script-comment-start "(*")
- '(proof-script-comment-start-regexp "(\\*")
- '(proof-script-parse-function (quote coq-script-parse-function))
- '(proof-script-span-context-menu-extensions (quote coq-create-span-menu))
- '(proof-shell-start-silent-cmd "Set Silent. ")
- '(proof-shell-stop-silent-cmd "Unset Silent. ")
- '(proof-showproof-command "Show. ")
- '(proof-state-preserving-p (quote coq-state-preserving-p))
- '(proof-terminal-string ".")
- '(proof-three-window-mode-policy (quote hybrid))
- '(proof-tree-configured t)
- '(proof-tree-find-begin-of-unfinished-proof (quote coq-find-begin-of-unfinished-proof))
- '(proof-tree-get-proof-info (quote coq-proof-tree-get-proof-info))
  '(mouse-autoselect-window t)
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
@@ -336,13 +312,14 @@
    (quote
     ("/home/fox/stow/src/emacs-24.5/src" "/home/fox/stow/src/emacs-24.5/lisp")))
  '(tool-bar-mode nil)
+ '(typopunct-buffer-language (quote english))
  '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :foundry "nil" :family "PragmataPro"))))
+ '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "MesloLGM Nerd Font"))))
  '(variable-pitch ((t (:height 120 :family "Source Sans Pro")))))
 
 (provide 'init)
