@@ -72,7 +72,7 @@
   :defer t
   :mode ("\\.v\\'" . coq-mode)
   :config
-  (proof-three-window-enable t)
+  (setq proof-three-window-enable t)
   :load-path
   "/home/fox/stow/packages/ProofGeneral/generic")
 
@@ -274,6 +274,8 @@
 (bind-key "M-(" "‘")
 (bind-key "M-)" "’")
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
@@ -288,6 +290,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(tags-revert-without-query 1)
  '(column-number-mode 1)
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
