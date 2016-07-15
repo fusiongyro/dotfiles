@@ -47,6 +47,22 @@
   :ensure t
   :bind ("C-x g" . magit-status))
 
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :config
+  (setenv "PATH" (concat (getenv "PATH") ":" (getenv "GOPATH") "/bin"))
+  (push (concat (getenv "GOPATH") "/bin") exec-path)
+  (push (concat (getenv "GOROOT") "/bin") exec-path)
+  (setq gofmt-command "goimports")
+  (setq compile-command "go build -v; and go test -v; and go vet; and golint")
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (setq tab-width 4)
+  (require 'company-go)
+  (use-package go-eldoc :ensure t :init (go-eldoc-setup))
+  :bind (("M-."     . godef-jump)
+         ("C-c C-c" . compile)))
+
 (use-package telephone-line
   :demand t
   :ensure t
@@ -64,12 +80,6 @@
   :demand t
   :init
   (load-theme 'flatui t))
-
-(use-package ido-mode
-  :demand t
-  :init
-  (ido-mode 1)
-  (setq ido-everywhere t))
 
 (use-package proof-site
   :defer t
@@ -99,8 +109,6 @@
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
-
-
 ;; Prolog stuff
 (use-package prolog-mode
   :mode "\\.pl\\'"
@@ -121,6 +129,7 @@
 ;;   (haskell-indentation-mode))
 
 (use-package markdown-mode
+  :ensure t
   :init
   (add-hook 'markdown-mode-hook 'visual-line-mode))
 
@@ -322,7 +331,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "MesloLGM Nerd Font"))))
+ '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :foundry "nil" :family "PragmataPro"))))
  '(variable-pitch ((t (:height 120 :family "Source Sans Pro")))))
 
 (provide 'init)
