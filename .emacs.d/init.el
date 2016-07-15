@@ -61,15 +61,19 @@
   :ensure t
   :mode "\\.go\\'"
   :config
-  (setenv "PATH" (concat (getenv "PATH") ":" (getenv "GOPATH") "/bin"))
+  (use-package company-go :ensure t :demand t)
+  (use-package go-eldoc :ensure t :demand t :init (go-eldoc-setup))
+  (setenv "PATH" (concat (getenv "PATH")
+                         ":" (getenv "GOROOT") "/bin"
+                         ":" (getenv "GOROOT") "/bin"))
   (push (concat (getenv "GOPATH") "/bin") exec-path)
   (push (concat (getenv "GOROOT") "/bin") exec-path)
   (setq gofmt-command "goimports")
   (setq compile-command "go build -v; and go test -v; and go vet; and golint")
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (setq tab-width 4)
-  (require 'company-go)
-  (use-package go-eldoc :ensure t :init (go-eldoc-setup))
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (set (make-local-variable 'company-backends) '(company-go))))
   :bind (("M-."     . godef-jump)
          ("C-c C-c" . compile)))
 
@@ -83,7 +87,8 @@
   :ensure t
   :diminish paredit-mode
   :config
-  (add-lisp-hook #'enable-paredit-mode))
+  (add-lisp-hook #'enable-paredit-mode)
+  (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp))
 
 (use-package flatui-theme
   :ensure t
@@ -331,12 +336,10 @@
  '(mouse-autoselect-window t)
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
- '(tags-table-list
-   (quote
-    ("/home/fox/stow/src/emacs-24.5/src" "/home/fox/stow/src/emacs-24.5/lisp")))
  '(tool-bar-mode nil)
  '(typopunct-buffer-language (quote english))
- '(vc-follow-symlinks t))
+ '(vc-follow-symlinks t)
+ '(tab-width 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
