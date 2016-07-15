@@ -38,6 +38,13 @@
 
 (use-package cider)
 
+(use-package ido-mode
+  :demand t
+  :init
+  (ido-mode 1)
+  :config
+  (setq ido-everywhere t))
+
 (use-package typopunct
   :init (add-hook 'text-mode-hook 'typopunct-mode))
 
@@ -335,7 +342,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :foundry "nil" :family "PragmataPro"))))
+ '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "PragmataPro Mono"))))
  '(variable-pitch ((t (:height 120 :family "Source Sans Pro")))))
 
 (provide 'init)
