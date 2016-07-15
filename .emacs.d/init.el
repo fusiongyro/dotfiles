@@ -38,6 +38,9 @@
 
 (use-package cider)
 
+(use-package typopunct
+  :init (add-hook 'text-mode-hook 'typopunct-mode))
+
 (use-package fill-column-indicator
   :ensure t
   :demand t
@@ -235,6 +238,7 @@
 ;; increase/decrease font size on a Mac
 (bind-key "s-+" 'text-scale-increase)
 (bind-key "s--" 'text-scale-decrease)
+(bind-key "<f6>" 'compile)
 
 ;; fix undo
 (bind-key "C-z" 'undo)
