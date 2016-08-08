@@ -24,6 +24,12 @@
 (eval-when-compile
   (require 'use-package))
 
+;; a function: confirm, but only if the server isn't running
+(defun confirm-if-server-running (query)
+  (if (and (fboundp 'server-running-p) (server-running-p))
+      (y-or-n-p query)
+    t))
+
 (defun add-lisp-hook (hook)
   (dolist (mode '(lisp-mode-hook
 		  emacs-lisp-mode-hook
@@ -322,8 +328,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(tags-revert-without-query 1)
  '(column-number-mode 1)
+ '(confirm-kill-emacs (quote confirm-if-server-running))
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
@@ -334,12 +340,14 @@
  '(line-number-mode 1)
  '(menu-bar-mode nil)
  '(mouse-autoselect-window t)
+ '(org-confirm-babel-evaluate nil)
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
+ '(tab-width 4)
+ '(tags-revert-without-query 1)
  '(tool-bar-mode nil)
  '(typopunct-buffer-language (quote english))
- '(vc-follow-symlinks t)
- '(tab-width 4))
+ '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
