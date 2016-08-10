@@ -36,6 +36,10 @@
 		  slime-repl-mode-hook))
     (add-hook mode hook)))
 
+(use-package impatient-mode
+  :ensure t
+  :demand t)
+
 (use-package cider)
 
 (use-package ido-mode
