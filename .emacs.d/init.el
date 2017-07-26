@@ -6,13 +6,21 @@
 (package-initialize)
 
 (setq load-path (cons "~/.emacs.d/dkl" load-path))
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (add-to-list 'exec-path "/home/fox/stow/bin")
 (add-to-list 'exec-path "~/bin")
 (add-to-list 'exec-path "~/.cabal/bin")
+(add-to-list 'exec-path "/usr/local/bin")
+
+;; propagate the path variable in case it's stupid
+(setenv "PATH" (mapconcat 'identity exec-path ":"))
+
+(add-hook 'text-mode-hook 'visual-line-mode)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -43,6 +51,10 @@
     (add-hook mode hook)))
 
 (use-package cider)
+
+(use-package lua-mode
+  :ensure t
+  :mode "\\.lua\\'")
 
 (use-package ido-mode
   :demand t
@@ -101,6 +113,11 @@
   :demand t
   :init
   (load-theme 'flatui t))
+
+;; (use-package material-theme
+;;   :ensure t
+;;   :demand t
+;;   :init (load-theme 'material-light))
 
 (use-package proof-site
   :defer t
@@ -180,7 +197,7 @@
 
 ;; Mail
 (defun file-string (file)
-    "Read the contents of a file and return as a string."
+    "Read the contents of FILE and return as a string."
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
@@ -188,13 +205,15 @@
   :config
   (setq user-mail-address "dlyons@nrao.edu"
 	mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
-	send-mail-function 'sendmail-send-it
-	mu4e-mu-binary "/home/fox/stow/bin/mu"
+	send-mail-function 'smtpmail-send-it
+    smtpmail-smtp-server "smtp-auth.aoc.nrao.edu"
+	mu4e-mu-binary "/usr/local/bin/mu"
 	mu4e-sent-folder "/Sent"
 	mu4e-drafts-folder "/Drafts"
 	mu4e-trash-folder "/Trash"
 	mu4e-refile-folder "/Archives"
-	mu4e-get-mail-command "/home/fox/stow/bin/offlineimap"
+	mu4e-get-mail-command "/usr/local/bin/offlineimap"
+    mu4e-html2text-command 'mu4e-shr2text
 	mu4e-update-interval 300
 	mu4e-compose-signature (file-string "~/.signature")
 	mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
@@ -206,7 +225,9 @@
 			 ("date:7d..now" "Last 7 days" ?w)
 			 ("mime:image/*" "Messages with images" ?p)))
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
-  (load-library "org-mu4e"))
+  (add-hook 'mu4e-view-mode-hook 'variable-pitch-mode)
+  (load-library "org-mu4e")
+  (load-library "mu4e-contrib"))
 
 ;; Window manager
 ;(load-file "~/.emacs.d/dkl/exwm.el")
@@ -219,6 +240,7 @@
 (diminish 'mml-mode)
 
 ;; Org mode stuff
+(require 'ob-prolog)
 (use-package org
   :demand t
   :diminish orgstruct-mode
@@ -235,7 +257,8 @@
      (sh . t)
      (haskell . t)
      (awk . t)
-     (lisp . t)))
+     (lisp . t)
+     (prolog . t)))
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
@@ -328,33 +351,77 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector
+   ["#ecf0f1" "#e74c3c" "#2ecc71" "#f1c40f" "#2492db" "#9b59b6" "#1abc9c" "#2c3e50"])
  '(column-number-mode 1)
  '(confirm-kill-emacs (quote confirm-if-server-running))
+ '(custom-safe-themes
+   (quote
+    ("5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
+ '(desktop-save-mode t)
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(fci-rule-color "#37474f")
+ '(hl-sexp-background-color "#1c1f26")
  '(indent-tabs-mode nil)
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(line-number-mode 1)
+ '(line-spacing 4)
  '(menu-bar-mode nil)
  '(mouse-autoselect-window t)
  '(org-confirm-babel-evaluate nil)
+ '(package-selected-packages
+   (quote
+    (lua-mode graphviz-dot-mode org-plus-contrib org ob-prolog alert haskell-mode use-package telephone-line slime-company paredit markdown-mode magit haste go-eldoc flycheck flatui-theme fill-column-indicator company-go cider)))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
+ '(smtpmail-default-smtp-server "smtp-auth.aoc.nrao.edu")
+ '(smtpmail-local-domain "nrao.edu")
+ '(smtpmail-sendto-domain "nrao.edu")
+ '(smtpmail-smtp-server "smtp-auth.aoc.nrao.edu")
+ '(smtpmail-smtp-user "dlyons")
+ '(starttls-extra-arguments nil)
+ '(starttls-gnutls-program "/opt/local/bin/gnutls-cli")
+ '(starttls-use-gnutls t)
  '(tab-width 4)
  '(tags-revert-without-query 1)
  '(tool-bar-mode nil)
  '(typopunct-buffer-language (quote english))
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#f36c60")
+     (40 . "#ff9800")
+     (60 . "#fff59d")
+     (80 . "#8bc34a")
+     (100 . "#81d4fa")
+     (120 . "#4dd0e1")
+     (140 . "#b39ddb")
+     (160 . "#f36c60")
+     (180 . "#ff9800")
+     (200 . "#fff59d")
+     (220 . "#8bc34a")
+     (240 . "#81d4fa")
+     (260 . "#4dd0e1")
+     (280 . "#b39ddb")
+     (300 . "#f36c60")
+     (320 . "#ff9800")
+     (340 . "#fff59d")
+     (360 . "#8bc34a"))))
+ '(vc-annotate-very-old-color nil)
  '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#ecf0f1" :foreground "#2c3e50" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "PragmataPro Mono"))))
- '(variable-pitch ((t (:height 120 :family "Source Sans Pro")))))
+ '(mu4e-header-highlight-face ((t (:inherit region :weight bold))))
+ '(variable-pitch ((t (:height 150 :family "Avenir Next Condensed Medium")))))
 
 (provide 'init)
 ;;; init.el ends here
