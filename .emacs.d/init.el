@@ -1,3 +1,5 @@
+;;; Commentary:
+;;init -- This is my init file.
 ;; -*- mode: emacs-lisp -*-
 
 ;;; Code:
@@ -38,11 +40,13 @@
 
 ;; a function: confirm, but only if the server isn't running
 (defun confirm-if-server-running (query)
+  "Require a confirmation if the server is running.  Something something QUERY."
   (if (and (fboundp 'server-running-p) (server-running-p))
       (y-or-n-p query)
     t))
 
 (defun add-lisp-hook (hook)
+  "Apply HOOK to each Lisp mode, of which there are many."
   (dolist (mode '(lisp-mode-hook
 		  emacs-lisp-mode-hook
 		  eval-expression-minibuffer-setup-hook
@@ -65,6 +69,7 @@
   :mode "\\.lua\\'")
 
 (use-package ido-mode
+  :defines ido-everywhere
   :demand t
   :init
   (ido-mode 1)
@@ -125,6 +130,7 @@
 ;;   :init (load-theme 'material-light))
 
 (use-package proof-site
+  :defines proof-three-window-enable
   :defer t
   :mode ("\\.v\\'" . coq-mode)
   :config
@@ -133,6 +139,7 @@
   "/home/fox/stow/packages/ProofGeneral/generic")
 
 (use-package rnc-mode
+  :defines rnc-jing-jar-file
   :mode "\\.rnc\\'"
   :init
   (setq rnc-jing-jar-file (expand-file-name "~/jing.jar")))
@@ -154,6 +161,7 @@
 
 ;; Prolog stuff
 (use-package prolog-mode
+  :defines prolog-program-name prolog-indent-width prolog-paren-indent-p prolog-system
   :mode "\\.pl\\'"
   :init
   (setq prolog-program-name "swipl"
@@ -207,28 +215,32 @@
       (buffer-string)))
 
 (use-package mu4e
+  :defines mu4e-user-mail-address-list send-mail-function smtpmail-smtp-server
+  mu4e-mu-binary mu4e-sent-folder mu4e-drafts-folder mu4e-trash-folder
+  mu4e-refile-folder mu4e-get-mail-command mu4e-html2text-command mu4e-update-interval
+  mu4e-compose-signature mu4e-headers-fields mu4e-bookmarks
   :config
   (setq user-mail-address "dlyons@nrao.edu"
-	mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
-	send-mail-function 'smtpmail-send-it
-    smtpmail-smtp-server "smtp-auth.aoc.nrao.edu"
-	mu4e-mu-binary "/usr/local/bin/mu"
-	mu4e-sent-folder "/Sent"
-	mu4e-drafts-folder "/Drafts"
-	mu4e-trash-folder "/Trash"
-	mu4e-refile-folder "/Archives"
-	mu4e-get-mail-command "/usr/local/bin/offlineimap"
-    mu4e-html2text-command 'mu4e-shr2text
-	mu4e-update-interval 300
-	mu4e-compose-signature (file-string "~/.signature")
-	mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
-	mu4e-bookmarks '(("maildir:/INBOX" "Inbox" ?i)
-			 ("maildir:/Sent" "Sent Messages" ?s)
-			 ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
-			 ("date:today..now" "Today's messages" ?t)
+        mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
+        send-mail-function 'smtpmail-send-it
+        smtpmail-smtp-server "smtp-auth.aoc.nrao.edu"
+        mu4e-mu-binary "/usr/local/bin/mu"
+        mu4e-sent-folder "/Sent"
+        mu4e-drafts-folder "/Drafts"
+        mu4e-trash-folder "/Trash"
+        mu4e-refile-folder "/Archives"
+        mu4e-get-mail-command "/usr/local/bin/offlineimap"
+        mu4e-html2text-command 'mu4e-shr2text
+        mu4e-update-interval 300
+        mu4e-compose-signature (file-string "~/.signature")
+        mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
+        mu4e-bookmarks '(("maildir:/INBOX" "Inbox" ?i)
+                         ("maildir:/Sent" "Sent Messages" ?s)
+                         ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
+                         ("date:today..now" "Today's messages" ?t)
                          ("date:1d..today" "Yesterday's messages" ?y)
-			 ("date:7d..now" "Last 7 days" ?w)
-			 ("mime:image/*" "Messages with images" ?p)))
+                         ("date:7d..now" "Last 7 days" ?w)
+                         ("mime:image/*" "Messages with images" ?p)))
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook 'variable-pitch-mode)
   (load-library "org-mu4e")
@@ -276,6 +288,7 @@
   :bind ("C-c h" . haste))
 
 (use-package calc
+  :defines math-additional-units
   :init
   (setq math-additional-units '((GB "1024 * MB" "Giga Byte")
 				(MB "1024 * KB" "Mega Byte")
@@ -284,6 +297,7 @@
 
 ;; kill a window
 (defun kill-buffer-and-frame ()
+  "Deletes both the frame and the buffer which is active in the frame."
   (interactive)
   (kill-buffer)
   (delete-frame))
@@ -305,6 +319,7 @@
 
 ;; Hey, let's unfill!
 (defun unfill ()
+  "Undo the effect of a fill."
   (interactive)
   (let ((previous-fill-column fill-column))
     (setq fill-column 10000000)
@@ -315,6 +330,7 @@
 
 ;; Let's have a Stack Overflow-ify method on the buffer and region
 (defun copy-buffer-for-stackoverflow (beg end)
+  "Kill the active region from BEG to END, or the active buffer, prepending 4 spaces to the beginning."
   (interactive (if (use-region-p)
 		   (list (region-beginning) (region-end))
 		 (list nil nil)))
