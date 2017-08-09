@@ -10,8 +10,6 @@
 (setq load-path (cons "~/.emacs.d/dkl" load-path))
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
 
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
-
 (setq text-quoting-style 'curve)
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -62,6 +60,21 @@
   :ensure t
   :demand t)
 
+(use-package smex
+  :ensure t
+  :demand t
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)))
+
+(use-package avy
+  :ensure t
+  :demand t
+  :config
+  (avy-setup-default)
+  (setq avy-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
+  :bind
+  ("C-'" . avy-goto-char-2))
+
 (use-package cider)
 
 (use-package lua-mode
@@ -76,10 +89,10 @@
   :config
   (setq ido-everywhere t))
 
-(use-package fill-column-indicator
-  :ensure t
-  :demand t
-  :init (add-hook 'text-mode-hook 'fci-mode))
+;; (use-package fill-column-indicator
+;;   :ensure t
+;;   :demand t
+;;   :init (add-hook 'text-mode-hook 'fci-mode))
 
 (use-package magit
   :ensure t
@@ -240,6 +253,7 @@
                          ("date:today..now" "Today's messages" ?t)
                          ("date:1d..today" "Yesterday's messages" ?y)
                          ("date:7d..now" "Last 7 days" ?w)
+                         ("maildir:/Drafts" "Drafts" ?d)
                          ("mime:image/*" "Messages with images" ?p)))
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook 'variable-pitch-mode)
@@ -277,10 +291,11 @@
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
+  (add-hook 'message-mode-hook 'typopunct-mode)
   :bind (("C-c l" . org-store-link)
-	 ("C-c a" . org-agenda)
-	 ("C-c c" . org-capture)
-	 ("C-c b" . org-iswitchb)))
+         ("C-c a" . org-agenda)
+         ("C-c c" . org-capture)
+         ("C-c b" . org-iswitchb)))
 
 ;; Haste
 (use-package haste
@@ -294,6 +309,18 @@
 				(MB "1024 * KB" "Mega Byte")
 				(KB "1024 * B" "Kilo Byte")
 				(B nil "Byte"))))
+
+(use-package projectile
+  :ensure t
+  :config
+  (use-package projectile-speedbar
+    :ensure t))
+
+(use-package perspective
+  :ensure t
+  :config
+  (use-package persp-projectile
+    :ensure t))
 
 ;; kill a window
 (defun kill-buffer-and-frame ()
@@ -382,6 +409,9 @@
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(fci-rule-color "#f1c40f")
+ '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
+ '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
@@ -393,7 +423,7 @@
  '(org-confirm-babel-evaluate nil)
  '(package-selected-packages
    (quote
-    (org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
+    (xah-fly-keys smex god-mode projectile-speedbar speedbar-projectile sr-speedbar persp-projectile treemacs perspective-projectile projectile-perspective perspective projectile org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -402,6 +432,10 @@
            (rainbow-mode 1)))))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
+ '(sml/active-background-color "#34495e")
+ '(sml/active-foreground-color "#ecf0f1")
+ '(sml/inactive-background-color "#dfe4ea")
+ '(sml/inactive-foreground-color "#34495e")
  '(smtpmail-default-smtp-server "smtp-auth.aoc.nrao.edu")
  '(smtpmail-local-domain "nrao.edu")
  '(smtpmail-sendto-domain "nrao.edu")
@@ -414,6 +448,22 @@
  '(tags-revert-without-query 1)
  '(tool-bar-mode nil)
  '(typopunct-buffer-language (quote english))
+ '(vc-annotate-background "#ecf0f1")
+ '(vc-annotate-color-map
+   (quote
+    ((30 . "#e74c3c")
+     (60 . "#c0392b")
+     (90 . "#e67e22")
+     (120 . "#d35400")
+     (150 . "#f1c40f")
+     (180 . "#d98c10")
+     (210 . "#2ecc71")
+     (240 . "#27ae60")
+     (270 . "#1abc9c")
+     (300 . "#16a085")
+     (330 . "#2492db")
+     (360 . "#0a74b9"))))
+ '(vc-annotate-very-old-color "#0a74b9")
  '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -426,3 +476,5 @@
 
 (provide 'init)
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
