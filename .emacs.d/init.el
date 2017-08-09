@@ -56,6 +56,21 @@
 		  slime-repl-mode-hook))
     (add-hook mode hook)))
 
+(bind-key "M-o" 'other-window)
+(bind-key "C-x k" 'kill-this-buffer)
+(bind-key "s-<up>" 'shrink-window)
+(bind-key "s-<down>" 'enlarge-window)
+(bind-key "<f1>" 'shell)
+(bind-key "<f5>" 'revert-this-buffer)
+(bind-key "<f10>" 'magit-status)
+(bind-key "C-x C-b" 'ibuffer)
+
+(defun revert-this-buffer ()
+  "Reverts the current buffer without prompting."
+  (interactive)
+  (revert-buffer nil t t)
+  (message (concat "Reverted buffer " (buffer-name))))
+
 (use-package impatient-mode
   :ensure t
   :demand t)
@@ -211,7 +226,11 @@
     (use-package slime-company :ensure t)
     (slime-setup '(slime-fancy slime-company))
     (setq slime-net-coding-system 'utf-8-unix)
-    (setq inferior-lisp-program "sbcl")))
+    (setq inferior-lisp-program "ccl")))
+
+(use-package smex
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)))
 
 (use-package cider
   :ensure t
@@ -390,6 +409,11 @@
 (setq gc-cons-threshold 800000)
 
 (load-library "ayu-light-theme")
+(load-library "rust")
+
+(if (display-graphic-p)
+    (menu-bar-mode t)
+  (menu-bar-mode nil))
 
 ;; Customize
 (custom-set-variables
@@ -418,12 +442,11 @@
  '(initial-scratch-message nil)
  '(line-number-mode 1)
  '(line-spacing 4)
- '(menu-bar-mode nil)
  '(mouse-autoselect-window t)
  '(org-confirm-babel-evaluate nil)
  '(package-selected-packages
    (quote
-    (xah-fly-keys smex god-mode projectile-speedbar speedbar-projectile sr-speedbar persp-projectile treemacs perspective-projectile projectile-perspective perspective projectile org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
+    (xah-fly-keys god-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
