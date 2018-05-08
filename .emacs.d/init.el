@@ -8,9 +8,8 @@
 (package-initialize)
 
 (setq load-path (cons "~/.emacs.d/dkl" load-path))
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
 
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 
 (setq text-quoting-style 'curve)
 
@@ -204,7 +203,6 @@
   (setq tex-default-mode 'plain-tex-mode))
 
 (use-package slime
-  :ensure t
   :load-path "slime"
   :commands slime
   :config
@@ -220,7 +218,6 @@
          ("M-X" . smex-major-mode-commands)))
 
 (use-package cider
-  :ensure t
   :init
   (add-to-list 'exec-path "~/bin"))
 
@@ -233,35 +230,57 @@
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
+(defun matches-cs (msg)
+  "True if MSG is in the clanspum maildir."
+  (when msg (string-match-p "Clanspum" (mu4e-message-field msg :maildir))))
+
 (use-package mu4e
   :defines mu4e-user-mail-address-list send-mail-function smtpmail-smtp-server
   mu4e-mu-binary mu4e-sent-folder mu4e-drafts-folder mu4e-trash-folder
   mu4e-refile-folder mu4e-get-mail-command mu4e-html2text-command mu4e-update-interval
   mu4e-compose-signature mu4e-headers-fields mu4e-bookmarks
   :config
-  (setq user-mail-address "dlyons@nrao.edu"
-        mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
-        send-mail-function 'smtpmail-send-it
-        smtpmail-smtp-server "smtp-auth.aoc.nrao.edu"
-        mu4e-mu-binary "/usr/local/bin/mu"
-        mu4e-sent-folder "/Sent"
-        mu4e-drafts-folder "/Drafts"
-        mu4e-trash-folder "/Trash"
-        mu4e-refile-folder "/Archives"
-        mu4e-get-mail-command "/usr/local/bin/offlineimap"
-        mu4e-html2text-command 'mu4e-shr2text
-        mu4e-update-interval 300
-        mu4e-compose-signature (file-string "~/.signature")
-        mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
-        mu4e-bookmarks '(("maildir:/INBOX" "Inbox" ?i)
-                         ("maildir:/Sent" "Sent Messages" ?s)
-                         ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
-                         ("date:today..now" "Today's messages" ?t)
-                         ("date:1d..today" "Yesterday's messages" ?y)
-                         ("date:7d..now" "Last 7 days" ?w)
-                         ("mime:image/*" "Messages with images" ?p)))
+  (setq
+   mu4e-maildir  "~/Mail"
+   mu4e-contexts `(,(make-mu4e-context
+                     :name "Home"
+                     :match-func (lambda (msg)
+                                   (when msg (s-starts-with-p "/Clanspum" (mu4e-message-field msg :maildir))))
+                     :vars '((user-mail-address . "fusion@storytotell.org")
+                             (mu4e-compose-signature . (concat "Daniel K Lyons\n"))
+                             (mu4e-sent-folder . "/Clanspum/INBOX.Sent")
+                             (mu4e-drafts-folder . "/Clanspum/INBOX.Drafts")
+                             (mu4e-trash-folder . "/Clanspum/INBOX.Trash")
+                             (mu4e-refile-folder . "/Clanspum/INBOX.Old Mail")
+                             (smtpmail-smtp-server . "csv5.clanspum.net")))
+                   ,(make-mu4e-context
+                     :name "Work"
+                     :match-func (lambda (msg)
+                                   (when msg (s-starts-with-p "/NRAO" (mu4e-message-field msg :maildir))))
+                     :vars '((user-mail-address . "dlyons@nrao.edu")
+                             (mu4e-sent-folder . "/NRAO/Sent")
+                             (mu4e-drafts-folder . "/NRAO/Drafts")
+                             (mu4e-trash-folder . "/NRAO/Trash")
+                             (mu4e-refile-folder . "/NRAO/Archive")
+                             (smtpmail-smtp-server . "smtp-auth.aoc.nrao.edu")
+                             (mu4e-compose-signature . (file-string "~/.signature")))))
+   user-full-name "Daniel K Lyons"
+   send-mail-function 'smtpmail-send-it
+   mu4e-get-mail-command "/usr/bin/offlineimap"
+   mu4e-html2text-command 'mu4e-shr2text
+   mu4e-update-interval 300
+   mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
+   mu4e-bookmarks '(("maildir:/NRAO/INBOX OR maildir:/Clanspum/INBOX" "Inbox" ?i)
+                    ("maildir:/NRAO/Sent OR maildir:/Clanspum/Sent" "Sent Messages" ?s)
+                    ("flag:unread AND NOT flag:trashed AND NOT maildir:/Clanspum/INBOX.Junk" "Unread messages" ?u)
+                    ("date:today..now" "Today's messages" ?t)
+                    ("date:1d..today" "Yesterday's messages" ?y)
+                    ("date:7d..now" "Last 7 days" ?w)
+                    ("mime:image/*" "Messages with images" ?p)))
+  mu4e-get-mail-command "/usr/bin/offlineimap"
+  mu4e-mu-binary "/usr/bin/mu"
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
-  (add-hook 'mu4e-view-mode-hook 'variable-pitch-mode)
+;  (add-hook 'mu4e-view-mode-hook 'variable-pitch-mode)
   (load-library "org-mu4e")
   (load-library "mu4e-contrib"))
 
@@ -413,13 +432,15 @@
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
+ '(j-console-cmd "/Applications/j805/bin/jconsole")
  '(line-number-mode 1)
  '(line-spacing 4)
  '(mouse-autoselect-window t)
+ '(mu4e-headers-include-related nil)
  '(org-confirm-babel-evaluate nil)
  '(package-selected-packages
    (quote
-    (smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
+    (j-mode gnu-apl-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
