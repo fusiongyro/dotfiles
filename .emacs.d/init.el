@@ -230,10 +230,6 @@
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
-(defun matches-cs (msg)
-  "True if MSG is in the clanspum maildir."
-  (when msg (string-match-p "Clanspum" (mu4e-message-field msg :maildir))))
-
 (use-package mu4e
   :defines mu4e-user-mail-address-list send-mail-function smtpmail-smtp-server
   mu4e-mu-binary mu4e-sent-folder mu4e-drafts-folder mu4e-trash-folder
@@ -279,7 +275,7 @@
    send-mail-function 'smtpmail-send-it
    mu4e-get-mail-command "/usr/bin/offlineimap"
    mu4e-html2text-command 'mu4e-shr2text
-   mu4e-update-interval 300
+   mu4e-update-interval 600
    mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
    mu4e-bookmarks '(("maildir:/NRAO/INBOX OR maildir:/Clanspum/INBOX" "Inbox" ?i)
                     ("maildir:/NRAO/Sent OR maildir:/Clanspum/Sent" "Sent Messages" ?s)
