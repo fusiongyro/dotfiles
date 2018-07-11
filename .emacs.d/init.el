@@ -82,13 +82,16 @@
   :ensure t
   :mode "\\.lua\\'")
 
-(use-package ido-mode
-  :defines ido-everywhere
-  :demand t
-  :init
-  (ido-mode 1)
-  :config
-  (setq ido-everywhere t))
+;; (use-package ido-mode
+;;   :defines ido-everywhere
+;;   :demand t
+;;   :init
+;;   (ido-mode 1)
+;;   :config
+;;   (setq ido-everywhere t))
+
+(ido-mode 1)
+(setq ido-everywhere t)
 
 (use-package fill-column-indicator
   :ensure t
@@ -132,11 +135,11 @@
   (add-lisp-hook #'enable-paredit-mode)
   (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp))
 
-(use-package flatui-theme
-  :ensure t
-  :demand t
-  :init
-  (load-theme 'flatui t))
+;; (use-package flatui-theme
+;;   :ensure t
+;;   :demand t
+;;   :init
+;;   (load-theme 'flatui t))
 
 ;; (use-package material-theme
 ;;   :ensure t
@@ -271,14 +274,16 @@
                              (smtpmail-smtp-server . "smtp-auth.aoc.nrao.edu")
                              (smtpmail-smtp-user . "dlyons")
                              (mu4e-compose-signature . (file-string "~/.signature")))))
-   user-full-name "Daniel K Lyons"
+   user-full-name "Daniel Lyons"
    send-mail-function 'smtpmail-send-it
    mu4e-get-mail-command "/usr/bin/offlineimap"
    mu4e-html2text-command 'mu4e-shr2text
    mu4e-update-interval 600
    mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
    mu4e-bookmarks '(("maildir:/NRAO/INBOX OR maildir:/Clanspum/INBOX" "Inbox" ?i)
+                    ("maildir:/Clanspum/INBOX" "Inbox" ?p)
                     ("maildir:/NRAO/Sent OR maildir:/Clanspum/Sent" "Sent Messages" ?s)
+                    ("maildir:/NRAO/INBOX" "NRAO" ?n)
                     ("flag:unread AND NOT flag:trashed AND NOT maildir:/Clanspum/INBOX.Junk" "Unread messages" ?u)
                     ("date:today..now" "Today's messages" ?t)
                     ("date:1d..today" "Yesterday's messages" ?y)
@@ -302,7 +307,10 @@
 (diminish 'mml-mode)
 
 ;; Org mode stuff
+(defun prolog-program-name () "swipl")
+
 (use-package org
+  :ensure org-plus-contrib
   :demand t
   :diminish orgstruct-mode
   :diminish orgtbl-mode
@@ -315,6 +323,8 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((sql . t)
+     (prolog . t)
+     (restclient . t)
      (sh . t)
      (haskell . t)
      (awk . t)
@@ -407,7 +417,7 @@
 
 (setq gc-cons-threshold 800000)
 
-(load-library "ayu-light-theme")
+;(load-library "ayu-light-theme")
 (load-library "rust")
 
 (if (display-graphic-p)
@@ -420,21 +430,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#ecf0f1" "#e74c3c" "#2ecc71" "#f1c40f" "#2492db" "#9b59b6" "#1abc9c" "#2c3e50"])
  '(column-number-mode 1)
  '(confirm-kill-emacs (quote confirm-if-server-running))
- '(custom-enabled-themes (quote (ayu-light)))
+ '(custom-enabled-themes (quote (tango-dark)))
  '(custom-safe-themes
    (quote
-    ("5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "2e082aef340057efbbb5c9db06f5eebf177641ed25ac15e1c75af298ec25a107" default)))
+    ("15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "2e082aef340057efbbb5c9db06f5eebf177641ed25ac15e1c75af298ec25a107" default)))
  '(desktop-save-mode t)
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
- '(fci-rule-color "#f1c40f")
- '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
- '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
@@ -444,10 +449,11 @@
  '(line-spacing 4)
  '(mouse-autoselect-window t)
  '(mu4e-headers-include-related nil)
+ '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
  '(org-confirm-babel-evaluate nil)
  '(package-selected-packages
    (quote
-    (j-mode gnu-apl-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
+    (ob-prolog ob-restclient j-mode gnu-apl-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -456,11 +462,7 @@
            (rainbow-mode 1)))))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
- '(sml/active-background-color "#34495e")
- '(sml/active-foreground-color "#ecf0f1")
- '(sml/inactive-background-color "#dfe4ea")
- '(sml/inactive-foreground-color "#34495e")
- '(smtpmail-default-smtp-server  "csv5.clanspum.net")
+ '(smtpmail-default-smtp-server "csv5.clanspum.net")
  '(starttls-extra-arguments nil)
  '(starttls-gnutls-program "/usr/bin/gnutls-cli")
  '(starttls-use-gnutls t)
@@ -468,22 +470,6 @@
  '(tags-revert-without-query 1)
  '(tool-bar-mode nil)
  '(typopunct-buffer-language (quote english))
- '(vc-annotate-background "#ecf0f1")
- '(vc-annotate-color-map
-   (quote
-    ((30 . "#e74c3c")
-     (60 . "#c0392b")
-     (90 . "#e67e22")
-     (120 . "#d35400")
-     (150 . "#f1c40f")
-     (180 . "#d98c10")
-     (210 . "#2ecc71")
-     (240 . "#27ae60")
-     (270 . "#1abc9c")
-     (300 . "#16a085")
-     (330 . "#2492db")
-     (360 . "#0a74b9"))))
- '(vc-annotate-very-old-color "#0a74b9")
  '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -492,6 +478,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 140 :family "PragmataPro Mono"))))
  '(fringe ((t (:background "gray100"))))
+ '(mode-line ((t (:background "#555753" :foreground "#eeeeec" :box (:line-width -1 :style released-button)))))
  '(variable-pitch ((t (:height 150 :family "Source Sans Pro")))))
 
 (provide 'init)
