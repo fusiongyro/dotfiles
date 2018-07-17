@@ -317,7 +317,6 @@
   :init
   (setq org-agenda-files '("~/Dropbox/Notes/TODO.org")
 	org-confirm-babel-evaluate nil
-	org-confirm-babel-evaluate nil
 	org-use-speed-commands t
 	org-default-notes-file "~/Dropbox/Notes/TODO.org")
   (org-babel-do-load-languages
@@ -332,6 +331,7 @@
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
+  (setq org-publish-project-alist '(("recipes" :base-directory "~/Projects/rmgr" :publishing-directory "/7gf.org:recipes" :publishing-function org-html-publish-to-html)))
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
@@ -451,6 +451,7 @@
  '(mu4e-headers-include-related nil)
  '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
  '(org-confirm-babel-evaluate nil)
+ '(org-hide-leading-stars t)
  '(package-selected-packages
    (quote
     (ob-prolog ob-restclient j-mode gnu-apl-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
