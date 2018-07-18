@@ -3,8 +3,6 @@
 ;; -*- mode: emacs-lisp -*-
 
 ;;; Code:
-;(setq gc-cons-threshold 800000000)
-;(setq package-enable-at-startup nil)
 (package-initialize)
 
 (setq load-path (cons "~/.emacs.d/dkl" load-path))
@@ -32,9 +30,6 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;;
-;; Use-package init
-;;
 ;(eval-when-compile
 ;  (require 'use-package))
 
@@ -82,36 +77,14 @@
   :bind (("M-x" . smex)
          ("M-X" . smex-major-mode-commands)))
 
-;; (use-package avy
-;;   :ensure t
-;;   :demand t
-;;   :config
-;;   (avy-setup-default)
-;;   (setq avy-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
-;;   :bind
-;;   ("C-'" . avy-goto-char-2))
-
 (use-package cider)
 
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'")
 
-;; (use-package ido-mode
-;;   :defines ido-everywhere
-;;   :demand t
-;;   :init
-;;   (ido-mode 1)
-;;   :config
-;;   (setq ido-everywhere t))
-
 (ido-mode 1)
 (setq ido-everywhere t)
-
-;; (use-package fill-column-indicator
-;;   :ensure t
-;;   :demand t
-;;   :init (add-hook 'text-mode-hook 'fci-mode))
 
 (use-package magit
   :ensure t
@@ -148,17 +121,6 @@
   :config
   (add-lisp-hook #'enable-paredit-mode)
   (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp))
-
-;; (use-package flatui-theme
-;;   :ensure t
-;;   :demand t
-;;   :init
-;;   (load-theme 'flatui t))
-
-;; (use-package material-theme
-;;   :ensure t
-;;   :demand t
-;;   :init (load-theme 'material-light))
 
 (use-package proof-site
   :defines proof-three-window-enable
@@ -199,17 +161,8 @@
 	prolog-indent-width 4
 	prolog-paren-indent-p t
 	prolog-system 'swi))
-;; (load-file "/Users/fusion/Desktop/prolog.el")
 
 ;; GHC/Haskell stuff
-;; (use-package ghc-mod
-;;   :init
-;;   (autoload 'ghc-init "ghc" nil t)
-;;   (autoload 'ghc-debug "ghc" nil t)
-;;   :config
-;;   (ghc-init)
-;;   (haskell-indentation-mode))
-
 (use-package markdown-mode
   :ensure t
   :init
@@ -243,9 +196,6 @@
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
-;; Window manager
-;(load-file "~/.emacs.d/dkl/exwm.el")
-
 (diminish 'abbrev-mode)
 (diminish 'auto-fill-function)
 (diminish 'mml-mode)
@@ -278,7 +228,11 @@
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
-  (setq org-publish-project-alist '(("recipes" :base-directory "~/Projects/rmgr" :publishing-directory "/7gf.org:recipes" :publishing-function org-html-publish-to-html)))
+  (setq org-publish-project-alist
+        '(("recipes"
+           :base-directory "~/Projects/rmgr"
+           :publishing-directory "/7gf.org:recipes"
+           :publishing-function org-html-publish-to-html)))
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
@@ -297,18 +251,6 @@
 				(KB "1024 * B" "Kilo Byte")
 				(B nil "Byte"))))
 
-;; (use-package projectile
-;;   :ensure t
-;;   :config
-;;   (use-package projectile-speedbar
-;;     :ensure t))
-
-;; (use-package perspective
-;;   :ensure t
-;;   :config
-;;   (use-package persp-projectile
-;;     :ensure t))
-
 ;; kill a window
 (defun kill-buffer-and-frame ()
   "Deletes both the frame and the buffer which is active in the frame."
@@ -320,9 +262,6 @@
 (bind-key "s-+" 'text-scale-increase)
 (bind-key "s--" 'text-scale-decrease)
 (bind-key "<f6>" 'compile)
-
-;; fix undo
-;(bind-key "C-z" 'undo)
 
 ;; need to use UTF-8 by default because it's 2015
 (setq default-process-coding-system '(utf-8 . utf-8))
@@ -357,9 +296,6 @@
 (bind-key "C-c t" 'auto-revert-mode)
 
 ;; alt keybindings from Mac OS X
-(bind-key "M-_" "—")
-;(bind-key "M-(" "‘")
-;(bind-key "M-)" "’")
 (bind-key "M-/" 'hippie-expand)
 
 ;; fixing problems on OS X
@@ -424,6 +360,7 @@
            (rainbow-mode 1)))))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
+ '(shr-color-visible-luminance-min 70)
  '(starttls-extra-arguments nil)
  '(starttls-gnutls-program "/usr/bin/gnutls-cli")
  '(starttls-use-gnutls t)

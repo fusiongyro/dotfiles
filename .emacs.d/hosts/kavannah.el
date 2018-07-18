@@ -1,3 +1,5 @@
+(require 's)
+
 (use-package mu4e
   :defines mu4e-user-mail-address-list send-mail-function smtpmail-smtp-server
   mu4e-mu-binary mu4e-sent-folder mu4e-drafts-folder mu4e-trash-folder
