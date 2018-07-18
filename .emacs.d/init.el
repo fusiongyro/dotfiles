@@ -3,8 +3,8 @@
 ;; -*- mode: emacs-lisp -*-
 
 ;;; Code:
-(setq gc-cons-threshold 800000000)
-(setq package-enable-at-startup nil)
+;(setq gc-cons-threshold 800000000)
+;(setq package-enable-at-startup nil)
 (package-initialize)
 
 (setq load-path (cons "~/.emacs.d/dkl" load-path))
@@ -21,6 +21,7 @@
 (add-to-list 'exec-path "~/bin")
 (add-to-list 'exec-path "~/.cabal/bin")
 (add-to-list 'exec-path "/usr/local/bin")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
 
 ;; propagate the path variable in case it's stupid
 (setenv "PATH" (mapconcat 'identity exec-path ":"))
@@ -34,8 +35,8 @@
 ;;
 ;; Use-package init
 ;;
-(eval-when-compile
-  (require 'use-package))
+;(eval-when-compile
+;  (require 'use-package))
 
 ;; a function: confirm, but only if the server isn't running
 (defun confirm-if-server-running (query)
@@ -73,8 +74,7 @@
   (message (concat "Reverted buffer " (buffer-name))))
 
 (use-package impatient-mode
-  :ensure t
-  :demand t)
+  :ensure t)
 
 (use-package smex
   :ensure t
@@ -82,14 +82,14 @@
   :bind (("M-x" . smex)
          ("M-X" . smex-major-mode-commands)))
 
-(use-package avy
-  :ensure t
-  :demand t
-  :config
-  (avy-setup-default)
-  (setq avy-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
-  :bind
-  ("C-'" . avy-goto-char-2))
+;; (use-package avy
+;;   :ensure t
+;;   :demand t
+;;   :config
+;;   (avy-setup-default)
+;;   (setq avy-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
+;;   :bind
+;;   ("C-'" . avy-goto-char-2))
 
 (use-package cider)
 
@@ -118,7 +118,6 @@
   :bind ("C-x g" . magit-status))
 
 (use-package go-mode
-  :ensure t
   :mode "\\.go\\'"
   :config
   (use-package company-go :ensure t :demand t)
@@ -231,10 +230,6 @@
     (setq slime-net-coding-system 'utf-8-unix)
     (setq inferior-lisp-program "ccl")))
 
-(use-package smex
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)))
-
 (use-package cider
   :init
   (add-to-list 'exec-path "~/bin"))
@@ -248,44 +243,8 @@
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
-(use-package mu4e
-  :defines mu4e-user-mail-address-list send-mail-function smtpmail-smtp-server
-  mu4e-mu-binary mu4e-sent-folder mu4e-drafts-folder mu4e-trash-folder
-  mu4e-refile-folder mu4e-get-mail-command mu4e-html2text-command mu4e-update-interval
-  mu4e-compose-signature mu4e-headers-fields mu4e-bookmarks
-  :config
-  (setq user-mail-address "dlyons@nrao.edu"
-        mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
-        send-mail-function 'smtpmail-send-it
-        smtpmail-smtp-server "smtp-auth.aoc.nrao.edu"
-        mu4e-mu-binary "/usr/local/bin/mu"
-        mu4e-sent-folder "/Sent"
-        mu4e-drafts-folder "/Drafts"
-        mu4e-trash-folder "/Trash"
-        mu4e-refile-folder "/Archives"
-        mu4e-get-mail-command "/usr/local/bin/offlineimap"
-        mu4e-html2text-command 'mu4e-shr2text
-        mu4e-update-interval 300
-        mu4e-compose-signature (file-string "~/.signature")
-        mu4e-headers-fields '((:human-date . 12) (:flags . 6) (:mailing-list . 10) (:from . 22) (:thread-subject))
-        mu4e-bookmarks '(("maildir:/INBOX" "Inbox" ?i)
-                         ("maildir:/Sent" "Sent Messages" ?s)
-                         ("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
-                         ("date:today..now" "Today's messages" ?t)
-                         ("date:1d..today" "Yesterday's messages" ?y)
-                         ("date:7d..now" "Last 7 days" ?w)
-                         ("maildir:/Drafts" "Drafts" ?d)
-                         ("mime:image/*" "Messages with images" ?p)))
-  (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
-;  (add-hook 'mu4e-view-mode-hook 'variable-pitch-mode)
-  (load-library "org-mu4e")
-  (load-library "mu4e-contrib"))
-
 ;; Window manager
 ;(load-file "~/.emacs.d/dkl/exwm.el")
-
-;; printer
-(setq lpr-switches '("-Paoc324"))
 
 (diminish 'abbrev-mode)
 (diminish 'auto-fill-function)
@@ -299,6 +258,9 @@
   :demand t
   :diminish orgstruct-mode
   :diminish orgtbl-mode
+  :config
+  (use-package ob-prolog :ensure t :demand t)
+  (use-package ob-restclient :ensure t :demand t)
   :init
   (setq org-agenda-files '("~/Dropbox/Notes/TODO.org")
 	org-confirm-babel-evaluate nil
@@ -317,7 +279,6 @@
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
-  (add-hook 'message-mode-hook 'typopunct-mode)
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
@@ -336,17 +297,17 @@
 				(KB "1024 * B" "Kilo Byte")
 				(B nil "Byte"))))
 
-(use-package projectile
-  :ensure t
-  :config
-  (use-package projectile-speedbar
-    :ensure t))
+;; (use-package projectile
+;;   :ensure t
+;;   :config
+;;   (use-package projectile-speedbar
+;;     :ensure t))
 
-(use-package perspective
-  :ensure t
-  :config
-  (use-package persp-projectile
-    :ensure t))
+;; (use-package perspective
+;;   :ensure t
+;;   :config
+;;   (use-package persp-projectile
+;;     :ensure t))
 
 ;; kill a window
 (defun kill-buffer-and-frame ()
@@ -415,9 +376,6 @@
 
 (setq gc-cons-threshold 800000)
 
-;(load-library "ayu-light-theme")
-(load-library "rust")
-
 (if (display-graphic-p)
     (menu-bar-mode t)
   (menu-bar-mode nil))
@@ -431,9 +389,6 @@
  '(column-number-mode 1)
  '(confirm-kill-emacs (quote confirm-if-server-running))
  '(custom-enabled-themes (quote (tango-dark)))
- '(custom-safe-themes
-   (quote
-    ("15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "2e082aef340057efbbb5c9db06f5eebf177641ed25ac15e1c75af298ec25a107" default)))
  '(desktop-save-mode t)
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
@@ -448,10 +403,18 @@
  '(mouse-autoselect-window t)
  '(mu4e-headers-include-related nil)
  '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
+ '(org-babel-load-languages
+   (quote
+    ((sql . t)
+     (sh . t)
+     (haskell . t)
+     (awk . t)
+     (lisp . t))))
  '(org-confirm-babel-evaluate nil)
+ '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (ob-prolog ob-restclient j-mode gnu-apl-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode org-plus-contrib lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck flatui-theme fill-column-indicator company-go company-ghc cider org alert haskell-mode)))
+    (ob-restclient xah-fly-keys god-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck fill-column-indicator company-go company-ghc cider alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -460,14 +423,12 @@
            (rainbow-mode 1)))))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
- '(smtpmail-default-smtp-server "csv5.clanspum.net")
  '(starttls-extra-arguments nil)
  '(starttls-gnutls-program "/usr/bin/gnutls-cli")
  '(starttls-use-gnutls t)
  '(tab-width 4)
  '(tags-revert-without-query 1)
  '(tool-bar-mode nil)
- '(typopunct-buffer-language (quote english))
  '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -475,11 +436,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 140 :family "PragmataPro Mono"))))
- '(fringe ((t (:background "gray100"))))
- '(mode-line ((t (:background "#555753" :foreground "#eeeeec" :box (:line-width -1 :style released-button)))))
  '(variable-pitch ((t (:height 150 :family "Source Sans Pro")))))
+
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+
+(load-file (concat "~/.emacs.d/hosts/" system-name ".el"))
 
 (provide 'init)
 ;;; init.el ends here
-(put 'upcase-region 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
