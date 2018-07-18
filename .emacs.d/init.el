@@ -203,6 +203,15 @@
 ;; Org mode stuff
 (defun prolog-program-name () "swipl")
 
+(defun jira-issues-to-org-links (beg end)
+  "Convert JIRA issue references into 'org-mode' links from BEG to END, or in the active buffer."
+  (interactive (if (use-region-p)
+                   (list (region-beginning) (region-end))
+                 (list nil nil)))
+  (goto-char 1)
+  (while (search-forward-regexp "SSA-[0-9]+" nil t)
+    (replace-match (concat "[[https://open-jira.nrao.edu/browse/" (match-string 0) "][" (match-string 0) "]]") t)))
+
 (use-package org
   :ensure org-plus-contrib
   :demand t
@@ -236,7 +245,8 @@
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
-         ("C-c b" . org-iswitchb)))
+         ("C-c b" . org-iswitchb)
+         ("C-c j" . jira-issues-to-org-links)))
 
 ;; Haste
 (use-package haste
