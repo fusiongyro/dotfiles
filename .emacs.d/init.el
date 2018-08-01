@@ -5,6 +5,16 @@
 ;;; Code:
 (package-initialize)
 
+
+(defun his-tracing-function (orig-fun &rest args)
+  (message "shr-color-visible called with args %S" args)
+  (let ((res (apply orig-fun args)))
+    (message "shr-color-visible returned %S" res)
+    res))
+
+(advice-add 'shr-color-visible :around #'his-tracing-function)
+(advice-remove 'shr-color-visible #'his-tracing-function)
+
 (setq load-path (cons "~/.emacs.d/dkl" load-path))
 
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
@@ -114,13 +124,6 @@
   :demand t
   :init (powerline-default-theme))
 
-(use-package paredit
-  :ensure t
-  :diminish paredit-mode
-  :config
-  (add-lisp-hook #'enable-paredit-mode)
-  (define-key paredit-mode-map (kbd "C-j") 'eval-print-last-sexp))
-
 (use-package proof-site
   :defines proof-three-window-enable
   :defer t
@@ -195,9 +198,9 @@
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
-(diminish 'abbrev-mode)
-(diminish 'auto-fill-function)
-(diminish 'mml-mode)
+;(diminish 'abbrev-mode)
+;(diminish 'auto-fill-function)
+;(diminish 'mml-mode)
 
 ;; Org mode stuff
 (defun prolog-program-name ()
@@ -218,13 +221,14 @@
   :demand t
   :diminish orgstruct-mode
   :diminish orgtbl-mode
-  :defines '(org-project-publish-alist)
+  :defines org-project-publish-alist
   :config
   (use-package ob-prolog :ensure t :demand t)
   (use-package ob-restclient :ensure t :demand t)
   (use-package org-bullets :ensure t :demand t)
+  (use-package org-beautify-theme :ensure t :demand t)
   :init
-  (setq org-agenda-files '("~/Dropbox/Notes/TODO.org")
+  (setq org-agenda-files '("~/Dropbox/Notes/TODO.org" "~/Dropbox/Notes/VLASS.org")
 	org-confirm-babel-evaluate nil
 	org-use-speed-commands t
 	org-default-notes-file "~/Dropbox/Notes/TODO.org")
@@ -265,6 +269,10 @@
 				(MB "1024 * KB" "Mega Byte")
 				(KB "1024 * B" "Kilo Byte")
 				(B nil "Byte"))))
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :demand t)
 
 ;; kill a window
 (defun kill-buffer-and-frame ()
@@ -370,7 +378,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (color-theme-sanityinc-tomorrow powerline org-beautify-theme org-bullets ob-restclient xah-fly-keys god-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode lua-mode smooth-scroll elm-mode use-package sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck fill-column-indicator company-go company-ghc cider alert haskell-mode)))
+    (sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow powerline org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -379,7 +387,6 @@
            (rainbow-mode 1)))))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
- '(shr-color-visible-luminance-min 70)
  '(starttls-extra-arguments nil)
  '(starttls-gnutls-program "/usr/bin/gnutls-cli")
  '(starttls-use-gnutls t)
@@ -392,8 +399,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 140 :family "PragmataPro Mono"))))
- '(variable-pitch ((t (:height 150 :family "Source Sans Pro")))))
+ '(default ((t (:height 120 :family "PragmataPro Mono"))))
+ '(variable-pitch ((t (:height 130 :family "Source Sans Pro")))))
 
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
