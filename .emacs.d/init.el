@@ -109,11 +109,10 @@
   :bind (("M-."     . godef-jump)
          ("C-c C-c" . compile)))
 
-(use-package telephone-line
-  :demand t
+(use-package powerline
   :ensure t
-  :init
-  (telephone-line-mode 1))
+  :demand t
+  :init (powerline-default-theme))
 
 (use-package paredit
   :ensure t
@@ -201,7 +200,9 @@
 (diminish 'mml-mode)
 
 ;; Org mode stuff
-(defun prolog-program-name () "swipl")
+(defun prolog-program-name ()
+  "I use SWI-Prolog."
+  "swipl")
 
 (defun jira-issues-to-org-links (beg end)
   "Convert JIRA issue references into 'org-mode' links from BEG to END, or in the active buffer."
@@ -217,9 +218,11 @@
   :demand t
   :diminish orgstruct-mode
   :diminish orgtbl-mode
+  :defines '(org-project-publish-alist)
   :config
   (use-package ob-prolog :ensure t :demand t)
   (use-package ob-restclient :ensure t :demand t)
+  (use-package org-bullets :ensure t :demand t)
   :init
   (setq org-agenda-files '("~/Dropbox/Notes/TODO.org")
 	org-confirm-babel-evaluate nil
@@ -237,6 +240,8 @@
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+  (add-hook 'org-mode-hook (lambda () (load-theme 'org-beautify)))
   (setq org-publish-project-alist
         '(("recipes"
            :base-directory "~/Projects/rmgr"
@@ -307,6 +312,7 @@
 
 ;; alt keybindings from Mac OS X
 (bind-key "M-/" 'hippie-expand)
+(bind-key "C-z" 'undo)
 
 ;; fixing problems on OS X
 (bind-key "<home>" 'beginning-of-line)
@@ -334,7 +340,10 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode 1)
  '(confirm-kill-emacs (quote confirm-if-server-running))
- '(custom-enabled-themes (quote (tango-dark)))
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
+ '(custom-safe-themes
+   (quote
+    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "4639288d273cbd3dc880992e6032f9c817f17c4a91f00f3872009a099f5b3f84" default)))
  '(desktop-save-mode t)
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
@@ -361,7 +370,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (ob-restclient xah-fly-keys god-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode lua-mode smooth-scroll elm-mode use-package telephone-line sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck fill-column-indicator company-go company-ghc cider alert haskell-mode)))
+    (color-theme-sanityinc-tomorrow powerline org-beautify-theme org-bullets ob-restclient xah-fly-keys god-mode smex perspective sr-speedbar tabbar treemacs-evil treemacs lsp-rust lsp-mode flycheck-rust racer cargo rust-mode lua-mode smooth-scroll elm-mode use-package sml-mode slime-company paredit markdown-mode magit impatient-mode haste graphviz-dot-mode go-eldoc flycheck fill-column-indicator company-go company-ghc cider alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -389,7 +398,7 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-(load-file (concat "~/.emacs.d/hosts/" system-name ".el"))
+(load-file (concat "~/.emacs.d/hosts/" (system-name) ".el"))
 
 (provide 'init)
 ;;; init.el ends here
