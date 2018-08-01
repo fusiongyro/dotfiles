@@ -3,7 +3,10 @@
 ;; -*- mode: emacs-lisp -*-
 
 ;;; Code:
+(eval-when-compile
+  (require 'use-package))
 (package-initialize)
+(require 'use-package)
 
 
 (defun his-tracing-function (orig-fun &rest args)
@@ -39,9 +42,6 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
-;(eval-when-compile
-;  (require 'use-package))
 
 ;; a function: confirm, but only if the server isn't running
 (defun confirm-if-server-running (query)
@@ -124,20 +124,20 @@
   :demand t
   :init (powerline-default-theme))
 
-(use-package proof-site
-  :defines proof-three-window-enable
-  :defer t
-  :mode ("\\.v\\'" . coq-mode)
-  :config
-  (setq proof-three-window-enable t)
-  :load-path
-  "/home/fox/stow/packages/ProofGeneral/generic")
+;; (use-package proof-site
+;;   :defines proof-three-window-enable
+;;   :defer t
+;;   :mode ("\\.v\\'" . coq-mode)
+;;   :config
+;;   (setq proof-three-window-enable t)
+;;   :load-path
+;;   "/home/fox/stow/packages/ProofGeneral/generic")
 
-(use-package rnc-mode
-  :defines rnc-jing-jar-file
-  :mode "\\.rnc\\'"
-  :init
-  (setq rnc-jing-jar-file (expand-file-name "~/jing.jar")))
+;; (use-package rnc-mode
+;;   :defines rnc-jing-jar-file
+;;   :mode "\\.rnc\\'"
+;;   :init
+;;   (setq rnc-jing-jar-file (expand-file-name "~/jing.jar")))
 
 (use-package company
   :ensure t
@@ -160,9 +160,9 @@
   :mode "\\.pl\\'"
   :init
   (setq prolog-program-name "swipl"
-	prolog-indent-width 4
-	prolog-paren-indent-p t
-	prolog-system 'swi))
+        prolog-indent-width 4
+        prolog-paren-indent-p t
+        prolog-system 'swi))
 
 ;; GHC/Haskell stuff
 (use-package markdown-mode
