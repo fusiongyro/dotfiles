@@ -165,7 +165,11 @@
   :ensure t
   :demand t
   :init
-  (diminish 'auto-revert-mode))
+  (diminish 'auto-revert-mode)
+  (diminish 'abbrev-mode)
+  (diminish 'auto-fill-function)
+  (diminish 'mml-mode)
+  (diminish 'auto-revert-tail-mode))
 
 (use-package company
   :ensure t
@@ -225,15 +229,34 @@
   :demand t
   :config (popwin-mode 1))
 
+(use-package anzu
+  :ensure t
+  :demand t
+  :diminish anzu-mode)
+
 ;; Mail
 (defun file-string (file)
     "Read the contents of FILE and return as a string."
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
-;(diminish 'abbrev-mode)
-;(diminish 'auto-fill-function)
-;(diminish 'mml-mode)
+(use-package neotree
+  :ensure t
+  :demand t
+  :defines neo-theme
+  :init
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  :config
+  (use-package all-the-icons
+    :ensure t
+    :demand t))
+
+(use-package spaceline
+  :ensure t
+  :demand t
+  :init (spaceline-emacs-theme)
+  :config (setq powerline-default-separator 'utf-8))
+
 
 ;; Org mode stuff
 (defun prolog-program-name ()
@@ -414,7 +437,8 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow powerline org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+ '(powerline-default-separator (quote utf-8))
  '(safe-local-variable-values
    (quote
     ((eval when
