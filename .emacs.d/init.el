@@ -3,13 +3,20 @@
 ;; -*- mode: emacs-lisp -*-
 
 ;;; Code:
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (eval-when-compile
   (require 'use-package))
-(package-initialize)
+
 (require 'use-package)
 
-
 (defun his-tracing-function (orig-fun &rest args)
+  "A simple tracing function example, using ORIG-FUN and its ARGS."
   (message "shr-color-visible called with args %S" args)
   (let ((res (apply orig-fun args)))
     (message "shr-color-visible returned %S" res)
@@ -124,6 +131,21 @@
   :demand t
   :init (powerline-default-theme))
 
+(use-package yasnippet
+  :ensure t
+  :demand t
+  :diminish yas-minor-mode
+  :init
+  (yas-global-mode 1)
+  :config
+  (use-package yasnippet-snippets :ensure t :demand t))
+
+(use-package projectile
+  :ensure t
+  :demand t
+  :config
+  (projectile-mode +1))
+
 ;; (use-package proof-site
 ;;   :defines proof-three-window-enable
 ;;   :defer t
@@ -138,6 +160,12 @@
 ;;   :mode "\\.rnc\\'"
 ;;   :init
 ;;   (setq rnc-jing-jar-file (expand-file-name "~/jing.jar")))
+
+(use-package diminish
+  :ensure t
+  :demand t
+  :init
+  (diminish 'auto-revert-mode))
 
 (use-package company
   :ensure t
@@ -192,6 +220,11 @@
 (use-package haste
   :ensure t)
 
+(use-package popwin
+  :ensure t
+  :demand t
+  :config (popwin-mode 1))
+
 ;; Mail
 (defun file-string (file)
     "Read the contents of FILE and return as a string."
@@ -221,7 +254,7 @@
   :demand t
   :diminish orgstruct-mode
   :diminish orgtbl-mode
-  :defines org-project-publish-alist
+  :defines org-publish-project-alist org-publish-project-alist
   :config
   (use-package ob-prolog :ensure t :demand t)
   (use-package ob-restclient :ensure t :demand t)
@@ -231,7 +264,10 @@
   (setq org-agenda-files '("~/Dropbox/Notes/TODO.org" "~/Dropbox/Notes/VLASS.org")
 	org-confirm-babel-evaluate nil
 	org-use-speed-commands t
-	org-default-notes-file "~/Dropbox/Notes/TODO.org")
+	org-default-notes-file "~/Dropbox/Notes/TODO.org"
+    org-confirm-babel-evaluate nil
+    org-hide-leading-stars t
+    org-src-fontify-natively t)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((sql . t)
@@ -378,7 +414,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow powerline org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow powerline org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -393,7 +429,8 @@
  '(tab-width 4)
  '(tags-revert-without-query 1)
  '(tool-bar-mode nil)
- '(vc-follow-symlinks t))
+ '(vc-follow-symlinks t)
+ '(yas-global-mode 1))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
