@@ -244,6 +244,7 @@
   :ensure t
   :demand t
   :defines neo-theme
+  :bind (("<f8>" . neotree))
   :init
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   :config
@@ -422,7 +423,6 @@
  '(j-console-cmd "/Applications/j805/bin/jconsole")
  '(line-number-mode 1)
  '(line-spacing 4)
- '(mouse-autoselect-window t)
  '(mu4e-headers-include-related nil)
  '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
  '(org-babel-load-languages

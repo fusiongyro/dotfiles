@@ -1,3 +1,18 @@
+;;; dwight.aoc.nrao.edu -- stuff for my work account
+;;; Commentary:
+
+
+;;; Code:
+
+(defun open-qsub-error ()
+  "Opens the error file in a qsub email in the appropriate place."
+  (interactive)
+  (save-excursion
+    (search-forward "Error_Path: ")
+    (let* ((partial-path (buffer-substring (point) (line-end-position)))
+           (path (concat "/vlapipe@" partial-path)))
+      (find-file-other-window path))))
+
 (use-package mu4e
   :defines mu4e-user-mail-address-list send-mail-function smtpmail-smtp-server
   mu4e-mu-binary mu4e-sent-folder mu4e-drafts-folder mu4e-trash-folder
@@ -33,3 +48,6 @@
 
 ;; printer
 (setq lpr-switches '("-Paoc324"))
+
+(provide 'dwight.aoc.nrao.edu)
+;;; dwight.aoc.nrao.edu.el ends here
