@@ -163,13 +163,11 @@
 
 (use-package diminish
   :ensure t
-  :demand t
-  :init
-  (diminish 'auto-revert-mode)
-  (diminish 'abbrev-mode)
-  (diminish 'auto-fill-function)
-  (diminish 'mml-mode)
-  (diminish 'auto-revert-tail-mode))
+  :demand t)
+
+(use-package autorevert :diminish auto-revert-mode)
+(use-package abbrev :diminish abbrev-mode)
+(use-package mml :diminish mml-mode)
 
 (use-package company
   :ensure t
