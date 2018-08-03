@@ -224,6 +224,11 @@
 (use-package haste
   :ensure t)
 
+(use-package fancy-battery
+  :ensure t
+  :demand t
+  :init (add-hook 'after-init-hook #'fancy-battery-mode))
+
 (use-package popwin
   :ensure t
   :demand t
@@ -232,7 +237,8 @@
 (use-package anzu
   :ensure t
   :demand t
-  :diminish anzu-mode)
+  :diminish anzu-mode
+  :bind (("M-%" . anzu-query-replace)))
 
 ;; Mail
 (defun file-string (file)
@@ -256,7 +262,8 @@
   :ensure t
   :demand t
   :init (spaceline-emacs-theme)
-  :config (setq powerline-default-separator 'utf-8))
+  :config (setq powerline-default-separator 'utf-8
+                spaceline-buffer-encoding-abbrev-p nil))
 
 
 ;; Org mode stuff
@@ -396,10 +403,6 @@
 
 (setq gc-cons-threshold 800000)
 
-(if (display-graphic-p)
-    (menu-bar-mode t)
-  (menu-bar-mode nil))
-
 ;; Customize
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -423,6 +426,7 @@
  '(j-console-cmd "/Applications/j805/bin/jconsole")
  '(line-number-mode 1)
  '(line-spacing 4)
+ '(menu-bar-mode nil)
  '(mu4e-headers-include-related nil)
  '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
  '(org-babel-load-languages
@@ -437,7 +441,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(powerline-default-separator (quote utf-8))
  '(safe-local-variable-values
    (quote
