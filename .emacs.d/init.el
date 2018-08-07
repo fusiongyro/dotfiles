@@ -230,6 +230,7 @@
 (use-package popwin
   :ensure t
   :demand t
+  :functions popwin-mode
   :config (popwin-mode 1))
 
 (use-package anzu
@@ -259,9 +260,11 @@
 (use-package spaceline
   :ensure t
   :demand t
+  :defines spaceline-buffer-encoding-abbrev-p spaceline-buffer-size-p
   :init (spaceline-emacs-theme)
   :config (setq powerline-default-separator 'utf-8
-                spaceline-buffer-encoding-abbrev-p nil))
+                spaceline-buffer-encoding-abbrev-p nil
+                spaceline-buffer-size-p nil))
 
 
 ;; Org mode stuff
@@ -284,6 +287,7 @@
   :diminish orgstruct-mode
   :diminish orgtbl-mode
   :defines org-publish-project-alist org-publish-project-alist
+  :functions org-babel-do-load-languages
   :config
   (use-package ob-prolog :ensure t :demand t)
   (use-package ob-restclient :ensure t :demand t)
