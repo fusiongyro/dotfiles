@@ -163,13 +163,11 @@
 
 (use-package diminish
   :ensure t
-  :demand t
-  :init
-  (diminish 'auto-revert-mode)
-  (diminish 'abbrev-mode)
-  (diminish 'auto-fill-function)
-  (diminish 'mml-mode)
-  (diminish 'auto-revert-tail-mode))
+  :demand t)
+
+(use-package autorevert :diminish auto-revert-mode)
+(use-package abbrev :diminish abbrev-mode)
+(use-package mml :diminish mml-mode)
 
 (use-package company
   :ensure t
@@ -224,15 +222,22 @@
 (use-package haste
   :ensure t)
 
+(use-package fancy-battery
+  :ensure t
+  :demand t
+  :init (add-hook 'after-init-hook #'fancy-battery-mode))
+
 (use-package popwin
   :ensure t
   :demand t
+  :functions popwin-mode
   :config (popwin-mode 1))
 
 (use-package anzu
   :ensure t
   :demand t
-  :diminish anzu-mode)
+  :diminish anzu-mode
+  :bind (("M-%" . anzu-query-replace)))
 
 ;; Mail
 (defun file-string (file)
@@ -255,8 +260,11 @@
 (use-package spaceline
   :ensure t
   :demand t
+  :defines spaceline-buffer-encoding-abbrev-p spaceline-buffer-size-p
   :init (spaceline-emacs-theme)
-  :config (setq powerline-default-separator 'utf-8))
+  :config (setq powerline-default-separator 'utf-8
+                spaceline-buffer-encoding-abbrev-p nil
+                spaceline-buffer-size-p nil))
 
 
 ;; Org mode stuff
@@ -279,6 +287,7 @@
   :diminish orgstruct-mode
   :diminish orgtbl-mode
   :defines org-publish-project-alist org-publish-project-alist
+  :functions org-babel-do-load-languages
   :config
   (use-package ob-prolog :ensure t :demand t)
   (use-package ob-restclient :ensure t :demand t)
@@ -396,10 +405,6 @@
 
 (setq gc-cons-threshold 800000)
 
-(if (display-graphic-p)
-    (menu-bar-mode t)
-  (menu-bar-mode nil))
-
 ;; Customize
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -423,6 +428,7 @@
  '(j-console-cmd "/Applications/j805/bin/jconsole")
  '(line-number-mode 1)
  '(line-spacing 4)
+ '(menu-bar-mode nil)
  '(mu4e-headers-include-related nil)
  '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
  '(org-babel-load-languages
@@ -437,7 +443,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(powerline-default-separator (quote utf-8))
  '(safe-local-variable-values
    (quote
