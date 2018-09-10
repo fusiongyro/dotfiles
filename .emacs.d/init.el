@@ -482,5 +482,7 @@
 
 (load-file (concat "~/.emacs.d/hosts/" (system-name) ".el"))
 
+(put 'dired-find-alternate-file 'disabled nil)
+
 (provide 'init)
 ;;; init.el ends here
