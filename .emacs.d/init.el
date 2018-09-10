@@ -94,8 +94,6 @@
   :bind (("M-x" . smex)
          ("M-X" . smex-major-mode-commands)))
 
-(use-package cider)
-
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'")
@@ -109,6 +107,7 @@
 
 (use-package go-mode
   :mode "\\.go\\'"
+  :defines gofmt-command company-backends
   :config
   (use-package company-go :ensure t :demand t)
   (use-package go-eldoc :ensure t :demand t :init (go-eldoc-setup))
@@ -171,7 +170,6 @@
 
 (use-package company
   :ensure t
-  :demand t
   :diminish company-mode
   :init
   (add-hook 'prog-mode-hook 'company-mode))
@@ -194,6 +192,15 @@
         prolog-paren-indent-p t
         prolog-system 'swi))
 
+;; Julia
+(use-package julia-mode
+  :ensure t
+  :mode "\\.jl\\'"
+  :config
+  (use-package julia-shell :ensure t :demand t)
+  (use-package flycheck-julia :ensure t :demand t)
+  (setq julia-program (if (eq system-type 'darwin) "/Applications/Julia-1.0.app/Contents/Resources/julia/bin/julia" "julia")))
+
 ;; GHC/Haskell stuff
 (use-package markdown-mode
   :ensure t
@@ -205,6 +212,7 @@
   (setq tex-default-mode 'plain-tex-mode))
 
 (use-package slime
+  :defines slime-net-coding-system inferior-lisp-program
   :load-path "slime"
   :commands slime
   :config
@@ -214,10 +222,6 @@
     (slime-setup '(slime-fancy slime-company))
     (setq slime-net-coding-system 'utf-8-unix)
     (setq inferior-lisp-program "ccl")))
-
-(use-package cider
-  :init
-  (add-to-list 'exec-path "~/bin"))
 
 (use-package haste
   :ensure t)
@@ -305,11 +309,7 @@
    'org-babel-load-languages
    '((sql . t)
      (prolog . t)
-     (restclient . t)
-     (sh . t)
-     (haskell . t)
-     (awk . t)
-     (lisp . t)))
+     (restclient . t)))
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
@@ -361,6 +361,12 @@
 
 ;; Kill buffers and frames
 (bind-key "C-x 5 k" 'kill-buffer-and-frame)
+
+(defun my-kill-this-buffer ()
+  "In case 'kill-this-buffer' is being stupid, use this."
+  (interactive)
+  (kill-buffer (current-buffer)))
+(bind-key "C-x k" 'my-kill-this-buffer)
 
 ;; Hey, let's unfill!
 (defun unfill ()
@@ -443,8 +449,10 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (flycheck-julia julia-shell julia-mode ob-sh ob-shell fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(powerline-default-separator (quote utf-8))
+ '(powerline-gui-use-vcs-glyph t)
+ '(powerline-image-apple-rgb t)
  '(safe-local-variable-values
    (quote
     ((eval when

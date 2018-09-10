@@ -10,7 +10,7 @@
   (save-excursion
     (search-forward "Error_Path: ")
     (let* ((partial-path (buffer-substring (point) (line-end-position)))
-           (path (concat "/vlapipe@" partial-path)))
+           (path (concat "/ssh:vlapipe@" partial-path)))
       (find-file-other-window path))))
 
 (use-package mu4e
