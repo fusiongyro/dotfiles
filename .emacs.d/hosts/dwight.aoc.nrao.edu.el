@@ -49,5 +49,8 @@
 ;; printer
 (setq lpr-switches '("-Paoc324"))
 
+(custom-set-variables
+ '(j-console-cmd "/Applications/j805/bin/jconsole"))
+
 (provide 'dwight.aoc.nrao.edu)
 ;;; dwight.aoc.nrao.edu.el ends here

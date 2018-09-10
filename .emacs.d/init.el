@@ -88,6 +88,14 @@
 (use-package impatient-mode
   :ensure t)
 
+(use-package plantuml-mode
+  :ensure t
+  :mode "\\.puml\\'"
+  :defines plantuml-jar-path
+  :config
+  (use-package flycheck-plantuml :ensure t :demand t)
+  (setq plantuml-jar-path "~/Downloads/plantuml.jar"))
+
 (use-package smex
   :ensure t
   :demand t
@@ -425,7 +433,7 @@
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
- '(j-console-cmd "/Applications/j805/bin/jconsole")
+ '(j-console-cmd "/usr/bin/ijconsole")
  '(line-number-mode 1)
  '(line-spacing 4)
  '(menu-bar-mode nil)
@@ -443,7 +451,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (flycheck-plantuml plantuml-mode fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(powerline-default-separator (quote utf-8))
  '(safe-local-variable-values
    (quote

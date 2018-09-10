@@ -1,10 +1,13 @@
+;;; Commentary:
+
+;;; Code:
 (require 's)
 
 (use-package mu4e
   :defines mu4e-user-mail-address-list send-mail-function smtpmail-smtp-server
   mu4e-mu-binary mu4e-sent-folder mu4e-drafts-folder mu4e-trash-folder
   mu4e-refile-folder mu4e-get-mail-command mu4e-html2text-command mu4e-update-interval
-  mu4e-compose-signature mu4e-headers-fields mu4e-bookmarks
+  mu4e-compose-signature mu4e-headers-fields mu4e-bookmarks mu4e-maildir mu4e-contexts
   :config
   (setq
    mu4e-maildir  "~/Mail"
@@ -62,3 +65,9 @@
 ;  (add-hook 'mu4e-view-mode-hook 'variable-pitch-mode)
   (load-library "org-mu4e")
   (load-library "mu4e-contrib"))
+
+(custom-set-variables
+ '(j-console-cmd "/usr/bin/ijconsole"))
+
+(provide 'kavannah)
+;;; kavannah.el ends here
