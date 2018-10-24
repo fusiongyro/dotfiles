@@ -25,12 +25,12 @@
         mu4e-user-mail-address-list '("dlyons@nrao.edu" "dlyons@aoc.nrao.edu")
         send-mail-function 'smtpmail-send-it
         smtpmail-smtp-server "smtp-auth.aoc.nrao.edu"
-        mu4e-mu-binary "/usr/local/bin/mu"
+        mu4e-mu-binary "/home/fox/stow/bin/mu"
         mu4e-sent-folder "/Sent"
         mu4e-drafts-folder "/Drafts"
         mu4e-trash-folder "/Trash"
         mu4e-refile-folder "/Archives"
-        mu4e-get-mail-command "/usr/local/bin/offlineimap"
+        mu4e-get-mail-command "/home/fox/stow/bin/offlineimap"
         mu4e-html2text-command 'mu4e-shr2text
         mu4e-update-interval 300
         mu4e-compose-signature (file-string "~/.signature")
@@ -52,6 +52,8 @@
 (setq lpr-switches '("-Paoc324"))
 
 (custom-set-variables
+ '(focus-follows-mouse t)
+ '(mouse-autoselect-window t)
  '(j-console-cmd "/Applications/j805/bin/jconsole")
  '(powerline-image-apple-rgb nil))
 
@@ -60,7 +62,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 100 :family "PragmataPro Mono"))))
+ '(default ((t (:height 90 :family "PragmataPro Mono"))))
  '(variable-pitch ((t (:height 110 :family "Source Sans Pro")))))
 
 (provide 'fox)

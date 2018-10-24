@@ -85,6 +85,11 @@
   (revert-buffer nil t t)
   (message (concat "Reverted buffer " (buffer-name))))
 
+(use-package fish-mode
+  :ensure t
+  :demand t
+  :mode "\\.fish\\'")
+
 (use-package impatient-mode
   :ensure t)
 
