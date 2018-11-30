@@ -3,14 +3,20 @@
 
 
 ;;; Code:
-
-
-
 (defun open-qsub-error ()
   "Opens the error file in a qsub email in the appropriate place."
   (interactive)
   (save-excursion
     (search-forward "Error_Path: ")
+    (let* ((partial-path (buffer-substring (point) (line-end-position)))
+           (path (concat "/ssh:vlapipe@" partial-path)))
+      (find-file-other-window path))))
+
+(defun open-qsub-output ()
+  "Opens the output file in a qsub email in the appropriate place."
+  (interactive)
+  (save-excursion
+    (search-forward "Output_Path: ")
     (let* ((partial-path (buffer-substring (point) (line-end-position)))
            (path (concat "/ssh:vlapipe@" partial-path)))
       (find-file-other-window path))))
@@ -52,7 +58,7 @@
 (setq lpr-switches '("-Paoc324"))
 
 (custom-set-variables
- '(focus-follows-mouse t)
+ '(focus-follows-mouse nil)
  '(mouse-autoselect-window t)
  '(j-console-cmd "/Applications/j805/bin/jconsole")
  '(powerline-image-apple-rgb nil))

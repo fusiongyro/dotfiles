@@ -143,6 +143,10 @@
   :demand t
   :init (powerline-default-theme))
 
+(use-package yaml-mode
+  :mode "\\.yaml\\'"
+  :ensure t)
+
 (use-package yasnippet
   :ensure t
   :demand t
