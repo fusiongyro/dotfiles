@@ -10,10 +10,10 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(eval-when-compile
-  (require 'use-package))
+;(eval-when-compile
+;  (require 'use-package))
 
-(require 'use-package)
+;(require 'use-package)
 
 (defun his-tracing-function (orig-fun &rest args)
   "A simple tracing function example, using ORIG-FUN and its ARGS."
@@ -219,6 +219,11 @@
   (setq julia-program (if (eq system-type 'darwin) "/Applications/Julia-1.0.app/Contents/Resources/julia/bin/julia" "julia")))
 
 ;; GHC/Haskell stuff
+(use-package intero
+  :ensure t
+  :init
+  (add-hook 'haskell-mode-hook 'intero-mode))
+    
 (use-package markdown-mode
   :ensure t
   :init
@@ -310,7 +315,6 @@
   :defines org-publish-project-alist org-publish-project-alist
   :functions org-babel-do-load-languages
   :config
-  (use-package ob-prolog :ensure t :demand t)
   (use-package ob-restclient :ensure t :demand t)
   (use-package org-bullets :ensure t :demand t)
   (use-package org-beautify-theme :ensure t :demand t)
@@ -466,10 +470,10 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (flycheck-plantuml plantuml-mode flycheck-julia julia-shell julia-mode ob-sh ob-shell fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (intero flycheck-plantuml plantuml-mode flycheck-julia julia-shell julia-mode ob-sh ob-shell fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(powerline-default-separator (quote utf-8))
  '(powerline-gui-use-vcs-glyph t)
- '(powerline-image-apple-rgb t)
+ '(powerline-image-apple-rgb t t)
  '(safe-local-variable-values
    (quote
     ((eval when
