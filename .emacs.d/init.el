@@ -159,6 +159,10 @@
 (use-package projectile
   :ensure t
   :demand t
+  :bind
+  ("C-c C-p" . projectile-command-map)
+  :init
+  (setq projectile-keymap-prefix (kbd "C-c C-p"))
   :config
   (projectile-mode +1)
   :bind (("s-p" . projectile-command-map)
@@ -231,6 +235,12 @@
   :init
   (add-hook 'markdown-mode-hook 'visual-line-mode))
 
+(use-package visual-fill-column
+  :ensure t
+  :demand t
+  :init
+  (add-hook 'message-mode-hook 'turn-on-visual-fill-column-mode))
+
 (use-package tex-mode
   :init
   (setq tex-default-mode 'plain-tex-mode))
@@ -273,18 +283,35 @@
     (with-current-buffer (find-file-noselect file)
       (buffer-string)))
 
-(use-package neotree
-  :ensure t
-  :demand t
-  :defines neo-theme
-  :bind (("<f8>" . neotree))
-  :init
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-  :config
-  (use-package all-the-icons
-    :ensure t
-    :demand t))
+;; (use-package neotree
+;;   :ensure t
+;;   :demand t
+;;   :defines neo-themeq
+;;   :bind (("<f8>" . neotree))
+;;   :init
+;;   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+;;   :config
+;;   (use-package all-the-icons
+;;     :ensure t
+;;     :demand t))
 
+(use-package treemacs
+  :ensure t
+  :demand t)
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :ensure t
+  :config (treemacs-icons-dired-mode))
+
+(use-package treemacs-magit
+  :after treemacs magit
+  :ensure t)
+  
 (use-package spaceline
   :ensure t
   :demand t
@@ -312,17 +339,16 @@
 (use-package org
   :ensure org-plus-contrib
   :demand t
-  :diminish orgstruct-mode
   :diminish orgtbl-mode
   :defines org-publish-project-alist org-publish-project-alist
   :functions org-babel-do-load-languages
   :config
   (use-package ob-restclient :ensure t :demand t)
   :init
-  (setq org-agenda-files '("~/Dropbox/Notes/TODO.org" "~/Dropbox/Notes/VLASS.org")
+  (setq org-agenda-files '("~/Sync/Notes/TODO.org" "~/Sync/Notes/VLASS.org")
 	org-confirm-babel-evaluate nil
 	org-use-speed-commands t
-	org-default-notes-file "~/Dropbox/Notes/TODO.org"
+	org-default-notes-file "~/Sync/Notes/TODO.org"
     org-confirm-babel-evaluate nil
     org-hide-leading-stars t
     org-src-fontify-natively t)
@@ -330,7 +356,9 @@
    'org-babel-load-languages
    '((sql . t)
      (prolog . t)
-     (restclient . t)))
+     (restclient . t))
+     (shell . t))
+  (add-hook 'message-mode-hook 'orgtbl-mode)
   (add-hook 'message-mode-hook 'flyspell-mode)
   (setq org-publish-project-alist
         '(("recipes"
@@ -423,6 +451,34 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
+;; Navajo stuff
+(define-prefix-command 'ogonek-map)
+(define-key ogonek-map (kbd "a") (lambda (_) (interactive) (insert "ą")))
+(define-key ogonek-map (kbd "A") (lambda (_) (interactive) (insert "Ą")))
+(define-key ogonek-map (kbd "e") (lambda (_) (interactive) (insert "ę")))
+(define-key ogonek-map (kbd "E") (lambda (_) (interactive) (insert "Ę")))
+(define-key ogonek-map (kbd "i") (lambda (_) (interactive) (insert "į")))
+(define-key ogonek-map (kbd "I") (lambda (_) (interactive) (insert "Į")))
+(define-key ogonek-map (kbd "o") (lambda (_) (interactive) (insert "ǫ")))
+(define-key ogonek-map (kbd "O") (lambda (_) (interactive) (insert "Ǫ")))
+(define-key ogonek-map (kbd "'") 'high-ogonek-map)
+
+(define-prefix-command 'high-ogonek-map)
+(define-key high-ogonek-map (kbd "a") (lambda (_) (interactive) (insert "ą́")))
+(define-key high-ogonek-map (kbd "A") (lambda (_) (interactive) (insert "Ą́")))
+(define-key high-ogonek-map (kbd "e") (lambda (_) (interactive) (insert "ę́")))
+(define-key high-ogonek-map (kbd "E") (lambda (_) (interactive) (insert "Ę́")))
+(define-key high-ogonek-map (kbd "i") (lambda (_) (interactive) (insert "į́")))
+(define-key high-ogonek-map (kbd "I") (lambda (_) (interactive) (insert "Į́")))
+(define-key high-ogonek-map (kbd "o") (lambda (_) (interactive) (insert "ǫ́")))
+(define-key high-ogonek-map (kbd "O") (lambda (_) (interactive) (insert "Ǫ́")))
+
+(load-library "iso-transl")
+(define-key iso-transl-ctl-x-8-map "," 'ogonek-map)
+(bind-key "C-x 8 / l" (lambda () (interactive) (insert "ł")))
+(bind-key "C-x 8 / L" (lambda () (interactive) (insert "Ł")))
+
+
 ;; this is for the shell, because it isn't brilliant at this
 (setenv "HISTFILE" (expand-file-name (format "~/.history/%s" (getenv "HOSTNAME"))))
 
@@ -434,25 +490,34 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
  '(column-number-mode 1)
+ '(compilation-message-face (quote default))
  '(confirm-kill-emacs (quote confirm-if-server-running))
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
-    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "4639288d273cbd3dc880992e6032f9c817f17c4a91f00f3872009a099f5b3f84" default)))
+    ("bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "3b24f986084001ae46aa29ca791d2bc7f005c5c939646d2b800143526ab4d323" "41c8c11f649ba2832347fe16fe85cf66dafe5213ff4d659182e25378f9cfc183" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "4639288d273cbd3dc880992e6032f9c817f17c4a91f00f3872009a099f5b3f84" default)))
  '(desktop-save-mode t)
  '(display-time-mode 1)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(flycheck-color-mode-line-face-to-color (quote mode-line-buffer-id))
+ '(focus-follows-mouse nil)
+ '(frame-background-mode (quote dark))
  '(indent-tabs-mode nil)
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(ispell-program-name "aspell")
- '(j-console-cmd "/usr/bin/ijconsole")
+ '(j-console-cmd "/Applications/j805/bin/jconsole")
  '(line-number-mode 1)
  '(line-spacing 4)
+ '(magit-diff-use-overlays nil)
  '(menu-bar-mode nil)
+ '(message-fill-column nil)
+ '(mouse-autoselect-window t)
  '(mu4e-headers-include-related nil)
  '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
  '(org-babel-load-languages (quote ((sql . t) (haskell . t) (awk . t) (lisp . t))))
@@ -461,13 +526,16 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (slime-company go-eldoc company-go intero flycheck-plantuml plantuml-mode flycheck-julia julia-shell julia-mode ob-shell fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (visual-fill-column gnu-elpa-keyring-update intero flycheck-plantuml plantuml-mode flycheck-julia julia-shell julia-mode ob-shell fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(powerline-default-separator (quote utf-8))
  '(powerline-gui-use-vcs-glyph t)
- '(powerline-image-apple-rgb t t)
+ '(powerline-image-apple-rgb nil t)
+ '(ring-bell-function (quote ignore))
  '(safe-local-variable-values
    (quote
-    ((eval when
+    ((haskell-process-use-ghci . t)
+     (haskell-indent-spaces . 4)
+     (eval when
            (fboundp
             (quote rainbow-mode))
            (rainbow-mode 1)))))
@@ -479,7 +547,11 @@
  '(tab-width 4)
  '(tags-revert-without-query 1)
  '(tool-bar-mode nil)
+ '(vc-annotate-background nil)
+ '(vc-annotate-background-mode nil)
+ '(vc-annotate-very-old-color nil)
  '(vc-follow-symlinks t)
+ '(visual-fill-column-width 100)
  '(yas-global-mode 1))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -487,6 +559,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 120 :family "PragmataPro Mono"))))
+ '(mu4e-header-highlight-face ((t (:inherit region :weight bold))))
  '(variable-pitch ((t (:height 130 :family "Source Sans Pro")))))
 
 (put 'upcase-region 'disabled nil)
