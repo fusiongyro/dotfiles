@@ -356,8 +356,8 @@
    'org-babel-load-languages
    '((sql . t)
      (prolog . t)
-     (restclient . t))
-     (shell . t))
+     (restclient . t)
+     (shell . t)))
   (add-hook 'message-mode-hook 'orgtbl-mode)
   (add-hook 'message-mode-hook 'flyspell-mode)
   (setq org-publish-project-alist
