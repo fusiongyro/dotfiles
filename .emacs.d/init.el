@@ -160,7 +160,9 @@
   :ensure t
   :demand t
   :config
-  (projectile-mode +1))
+  (projectile-mode +1)
+  :bind (("s-p" . projectile-command-map)
+         ("C-c p" . projectile-command-map)))
 
 ;; (use-package proof-site
 ;;   :defines proof-three-window-enable
@@ -316,8 +318,6 @@
   :functions org-babel-do-load-languages
   :config
   (use-package ob-restclient :ensure t :demand t)
-  (use-package org-bullets :ensure t :demand t)
-  (use-package org-beautify-theme :ensure t :demand t)
   :init
   (setq org-agenda-files '("~/Dropbox/Notes/TODO.org" "~/Dropbox/Notes/VLASS.org")
 	org-confirm-babel-evaluate nil
@@ -331,11 +331,7 @@
    '((sql . t)
      (prolog . t)
      (restclient . t)))
-  (add-hook 'message-mode-hook 'turn-on-orgtbl)
-  (add-hook 'message-mode-hook 'turn-on-orgstruct)
   (add-hook 'message-mode-hook 'flyspell-mode)
-  (add-hook 'org-mode-hook 'org-bullets-mode)
-  (add-hook 'org-mode-hook (lambda () (load-theme 'org-beautify)))
   (setq org-publish-project-alist
         '(("recipes"
            :base-directory "~/Projects/rmgr"
@@ -452,25 +448,20 @@
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
+ '(ispell-program-name "aspell")
  '(j-console-cmd "/usr/bin/ijconsole")
  '(line-number-mode 1)
  '(line-spacing 4)
  '(menu-bar-mode nil)
  '(mu4e-headers-include-related nil)
  '(mu4e-user-mail-address-list (quote ("fusion@storytotell.org" "dlyons@nrao.edu")))
- '(org-babel-load-languages
-   (quote
-    ((sql . t)
-     (sh . t)
-     (haskell . t)
-     (awk . t)
-     (lisp . t))))
+ '(org-babel-load-languages (quote ((sql . t) (haskell . t) (awk . t) (lisp . t))))
  '(org-confirm-babel-evaluate nil)
  '(org-hide-leading-stars t)
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (intero flycheck-plantuml plantuml-mode flycheck-julia julia-shell julia-mode ob-sh ob-shell fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
+    (slime-company go-eldoc company-go intero flycheck-plantuml plantuml-mode flycheck-julia julia-shell julia-mode ob-shell fancy-battery spaceline neotree all-the-icons popwin anzu diminish yasnippet-snippets sanityinc-tomorrow-themes org-download epresent color-theme-sanityinc-tomorrow org-beautify-theme org-bullets ob-restclient smex lua-mode smooth-scroll use-package markdown-mode magit impatient-mode haste graphviz-dot-mode flycheck fill-column-indicator alert haskell-mode)))
  '(powerline-default-separator (quote utf-8))
  '(powerline-gui-use-vcs-glyph t)
  '(powerline-image-apple-rgb t t)

@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: iteration
+# key: iteration
+# --
+* Iteration $1
+** Review Inputs
+
+- Design Purpose :: N/A
+- Primary Functional Requirements :: N/A
+- ASRs :: N/A
+- QAs :: N/A
+- Constraints :: N/A
+- Concerns :: N/A
+
+** Establish Iteration Goals and Select Drivers
+
+The goal of this iteration is 
+
+** Choose System Element(s) to Refine
+
+The element to refine is 
+
+** Choose Design Concept(s) that Satisfy Drivers
+
+- Design Decision :: 
+- Rationale :: 
+
+** Instantiate Architecture Elements, Allocate Responsibilities, Define Interfaces
+** Sketch Views and Record Design Decisions
+** Analyze Current Design, Review Iteration Goal
