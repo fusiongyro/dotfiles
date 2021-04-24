@@ -37,6 +37,7 @@
 ;; formerly customize options
   (setq buffer-file-coding-system 'utf-8
 	column-number-mode 1
+	custom-file (concat user-emacs-directory "/custom.el")
 	default-process-coding-system '(utf-8 . utf-8)
 	desktop-save-mode t
 	display-time-mode 1
@@ -45,6 +46,7 @@
 	inhibit-startup-screen t
 	initial-scratch-message nil
 	line-spacing 4
+	make-backup-files nil
 	menu-bar-mode nil
 	scroll-bar-mode nil
 	sentence-end-double-space nil

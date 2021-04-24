@@ -1,0 +1,20 @@
+
+;; ----- smex-history -----
+(
+ mu4e
+ replace-string
+ set-variable
+ describe-variable
+ load-theme
+ cd
+ 5x5
+)
+
+;; ----- smex-data -----
+(
+ (load-theme . 2)
+ (set-variable . 3)
+ (mu4e . 7)
+ (describe-variable . 1)
+ (replace-string . 1)
+)

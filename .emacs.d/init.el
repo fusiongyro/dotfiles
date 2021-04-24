@@ -21,16 +21,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(flycheck-plantuml yasnippet-snippets yasnippet yaml-mode visual-fill-column color-theme-sanityinc-tomorrow smex plantuml-mode ob-restclient org-plus-contrib markdown-mode magit gemini-mode flycheck fish-mode feature-mode fancy-battery diminish company use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
