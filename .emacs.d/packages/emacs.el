@@ -16,6 +16,8 @@
   :init
   (bind-key "C-c s" 'copy-buffer-for-stackoverflow)
   (bind-key "C-c t" 'auto-revert-mode)
+  (bind-key "<home>" 'beginning-of-line)
+  (bind-key "<end>" 'end-of-line)
   (set-language-environment "UTF-8")
   (set-default-coding-systems 'utf-8)
   (setq gc-cons-threshold 800000)
@@ -33,6 +35,8 @@
 
   ;; this is for the shell, because it isn't brilliant at this
   (setenv "HISTFILE" (expand-file-name (format "~/.history/%s" (getenv "HOSTNAME"))))
+
+  (global-tab-line-mode 1)
 
 ;; formerly customize options
   (setq buffer-file-coding-system 'utf-8
@@ -60,6 +64,6 @@
 
   (put 'dired-find-alternate-file 'disabled nil)
 
-  (set-face-attribute 'default nil :family "PragmataPro Liga" :height 120)
-  (set-face-attribute 'fixed-pitch nil :family "PragmataPro Liga")
+  (set-face-attribute 'default nil :family "Victor Mono" :height 130 :weight 'semibold)
+  (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
   (set-face-attribute 'variable-pitch nil :family "Optima" :height 140))
